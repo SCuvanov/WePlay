@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "448433307285",
+    "firebase_url": "https://weplay-4defd.firebaseio.com",
+    "project_id": "weplay-4defd",
+    "storage_bucket": "weplay-4defd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:448433307285:android:d07f61c67f10f8ff",
+        "android_client_info": {
+          "package_name": "com.scuvanov.weplay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "448433307285-rm2abjhrf0fnmh0n9gmn5s30c5eleu8j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.scuvanov.weplay",
+            "certificate_hash": "71779dbe4317579b08f3c0837918845ed2eb4018"
+          }
+        },
+        {
+          "client_id": "448433307285-nv6b40h782q5bbhkeca671vjt9q1065b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkqAUgQ0nMjTMIoy_2opbRxG_lGYBRV8Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "448433307285-nv6b40h782q5bbhkeca671vjt9q1065b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
