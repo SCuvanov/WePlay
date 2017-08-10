@@ -57,7 +57,7 @@ public class LauncherActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(LauncherActivity.this, LoginActivity.class);
+                Intent intent = new Intent(LauncherActivity.this, EntryActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -68,7 +68,7 @@ public class LauncherActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(LauncherActivity.this, LoginActivity.class);
+                Intent intent = new Intent(LauncherActivity.this, EntryActivity.class);
                 startActivity(intent);
                 finish();
             }

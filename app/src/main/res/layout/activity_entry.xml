@@ -5,10 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="com.scuvanov.weplay.LauncherActivity"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="25dp">
-
+    tools:context="com.scuvanov.weplay.EntryActivity">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -19,7 +16,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -35,9 +32,29 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="50dp"
             android:layout_marginLeft="50dp"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:gravity="center"
             app:srcCompat="@drawable/logo" />
+
+            <fragment
+                android:id="@+id/fragmentSignIn"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="25dp"
+                android:name="com.scuvanov.weplay.fragment.SignInFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center" />
+
+            <fragment
+                android:id="@+id/fragmentSignUp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="25dp"
+                android:name="com.scuvanov.weplay.fragment.SignUpFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center" />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
