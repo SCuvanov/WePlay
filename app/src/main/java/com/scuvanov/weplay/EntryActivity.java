@@ -1,6 +1,8 @@
 package com.scuvanov.weplay;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -65,6 +67,17 @@ public class EntryActivity extends AppCompatActivity implements SignUpFragment.O
         ft.commit();
     }
 
+    public void goToMainActivity(){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(EntryActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, 1000);
+    }
+
     @Override
     public void switchToSignUpFragment() {
         showHideSignInFragment(fm.findFragmentById(R.id.fragmentSignIn));
@@ -75,5 +88,10 @@ public class EntryActivity extends AppCompatActivity implements SignUpFragment.O
     public void switchToSignInFragment() {
         showHideSignInFragment(fm.findFragmentById(R.id.fragmentSignIn));
         showHideSignUpFragment(fm.findFragmentById(R.id.fragmentSignUp));
+    }
+
+    @Override
+    public void switchToMainActivity() {
+        goToMainActivity();
     }
 }

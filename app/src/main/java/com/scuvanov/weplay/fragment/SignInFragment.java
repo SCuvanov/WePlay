@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.scuvanov.weplay.R;
 
 import org.apache.commons.lang3.StringUtils;
@@ -59,6 +60,8 @@ public class SignInFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -84,6 +87,7 @@ public class SignInFragment extends Fragment {
                 mListener.switchToSignUpFragment();
             }
         });
+
 
         return v;
     }
@@ -112,29 +116,32 @@ public class SignInFragment extends Fragment {
         mListener = null;
     }
 
-    private void login(){
+    private void login() {
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
 
         //TODO: Add error messages, etc.
-        if(StringUtils.isBlank(email) || StringUtils.isBlank(password)) return;
+        if (StringUtils.isBlank(email) || StringUtils.isBlank(password)) return;
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
                             Toast.makeText(getActivity(), R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         }
+
+                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if(user != null) mListener.switchToMainActivity();
                     }
                 });
     }
 
     public interface OnSignInFragmentInteractionListener {
         void switchToSignUpFragment();
+        void switchToMainActivity();
     }
 }

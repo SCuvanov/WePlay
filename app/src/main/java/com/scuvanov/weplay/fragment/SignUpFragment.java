@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.scuvanov.weplay.R;
 
 import org.apache.commons.lang3.StringUtils;
@@ -69,14 +70,14 @@ public class SignUpFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_sign_up, container, false);
-
-        mAuth = FirebaseAuth.getInstance();
 
         etEmail = (EditText) v.findViewById(R.id.etEmail);
         etPassword1 = (EditText) v.findViewById(R.id.etPassword1);
@@ -124,28 +125,30 @@ public class SignUpFragment extends Fragment {
         mListener = null;
     }
 
-    private void signUp(){
+    private void signUp() {
         String email = etEmail.getText().toString();
         String password = etPassword1.getText().toString();
 
-        //TODO: Add error messages, etc.
-        if(StringUtils.isBlank(email) || StringUtils.isBlank(password)) return;
+        if (StringUtils.isBlank(email) || StringUtils.isBlank(password)) return;
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
-
-                        if (!task.isSuccessful()) {
+                        if (task.isSuccessful()) {
+                            Log.w(TAG, "createUserWithEmail:failed", task.getException());
                             Toast.makeText(getActivity(), R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         }
+                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        if(user != null) mListener.switchToMainActivity();
                     }
                 });
     }
 
     public interface OnSignUpFragmentInteractionListener {
         void switchToSignInFragment();
+        void switchToMainActivity();
     }
 }
