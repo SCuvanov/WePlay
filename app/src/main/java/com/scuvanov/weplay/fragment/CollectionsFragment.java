@@ -11,10 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.scuvanov.weplay.R;
-import com.scuvanov.weplay.fragment.dummy.DummyContent;
-import com.scuvanov.weplay.fragment.dummy.DummyContent.DummyItem;
-
-import java.util.List;
+import com.scuvanov.weplay.dummy.DummyContent;
+import com.scuvanov.weplay.dummy.DummyContent.DummyItem;
 
 /**
  * A fragment representing a list of Items.
@@ -22,25 +20,25 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class SearchFragment extends Fragment {
+public class CollectionsFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
-    private int mColumnCount = 2;
+    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public SearchFragment() {
+    public CollectionsFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static SearchFragment newInstance(int columnCount) {
-        SearchFragment fragment = new SearchFragment();
+    public static CollectionsFragment newInstance(int columnCount) {
+        CollectionsFragment fragment = new CollectionsFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -59,7 +57,7 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_collections_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -70,7 +68,7 @@ public class SearchFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MySearchRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MyCollectionsRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
         return view;
     }

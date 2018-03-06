@@ -3,31 +3,38 @@ package com.scuvanov.weplay;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import com.scuvanov.weplay.dummy.DummyContent;
+import com.scuvanov.weplay.fragment.CollectionsFragment;
+import com.scuvanov.weplay.fragment.FeedFragment;
+import com.scuvanov.weplay.fragment.SearchFragment;
+
+public class MainActivity extends AppCompatActivity implements SearchFragment.OnListFragmentInteractionListener, FeedFragment.OnListFragmentInteractionListener, CollectionsFragment.OnListFragmentInteractionListener {
 
     private final String TAG = MainActivity.class.getCanonicalName();
 
-    private TextView mTextMessage;
+    FragmentManager fragmentManager;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
             switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                case R.id.navigation_collections:
+                    showCollectionsFragment();
                     return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                case R.id.navigation_feed:
+                    showFeedFragment();
                     return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                case R.id.navigation_search:
+                    showSearchFragment();
                     return true;
             }
             return false;
@@ -40,9 +47,37 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        showCollectionsFragment();
     }
 
+    private void showCollectionsFragment() {
+        fragmentManager = getSupportFragmentManager();
+        Fragment collectionsFragment = new CollectionsFragment();
+        fragmentManager.beginTransaction().replace(R.id.content, collectionsFragment).commit();
+    }
+
+    private void showFeedFragment() {
+        fragmentManager = getSupportFragmentManager();
+        Fragment feedFragment = new FeedFragment();
+        fragmentManager.beginTransaction().replace(R.id.content, feedFragment).commit();
+    }
+
+    private void showSearchFragment() {
+        fragmentManager = getSupportFragmentManager();
+        Fragment searchFragment = new SearchFragment();
+        fragmentManager.beginTransaction().replace(R.id.content, searchFragment).commit();
+    }
+
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(com.scuvanov.weplay.fragment.dummy.DummyContent.DummyItem item) {
+
+    }
 }
