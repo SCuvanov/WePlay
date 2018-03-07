@@ -79,10 +79,10 @@ public class SignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
-        etEmail = (EditText) v.findViewById(R.id.etEmail);
-        etPassword1 = (EditText) v.findViewById(R.id.etPassword1);
-        etPassword2 = (EditText) v.findViewById(R.id.etPassword2);
-        btnLogin = (Button) v.findViewById(R.id.btnLogin);
+        etEmail = v.findViewById(R.id.etEmail);
+        etPassword1 = v.findViewById(R.id.etPassword1);
+        etPassword2 = v.findViewById(R.id.etPassword2);
+        btnLogin = v.findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +90,7 @@ public class SignUpFragment extends Fragment {
             }
         });
 
-        btnSignUp = (Button) v.findViewById(R.id.btnSignUp);
+        btnSignUp = v.findViewById(R.id.btnSignUp);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

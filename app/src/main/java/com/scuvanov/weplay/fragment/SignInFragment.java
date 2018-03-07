@@ -70,9 +70,9 @@ public class SignInFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_sign_in, container, false);
 
-        etEmail = (EditText) v.findViewById(R.id.etEmail);
-        etPassword = (EditText) v.findViewById(R.id.etPassword);
-        btnLogin = (Button) v.findViewById(R.id.btnLogin);
+        etEmail = v.findViewById(R.id.etEmail);
+        etPassword = v.findViewById(R.id.etPassword);
+        btnLogin = v.findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +80,7 @@ public class SignInFragment extends Fragment {
             }
         });
 
-        btnSignUp = (Button) v.findViewById(R.id.btnSignUp);
+        btnSignUp = v.findViewById(R.id.btnSignUp);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

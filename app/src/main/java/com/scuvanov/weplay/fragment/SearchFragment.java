@@ -2,6 +2,7 @@ package com.scuvanov.weplay.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,13 +23,16 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements View.OnClickListener {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 2;
     private OnListFragmentInteractionListener mListener;
+
+    private FloatingActionButton fabSearch;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -72,6 +76,11 @@ public class SearchFragment extends Fragment {
             }
             recyclerView.setAdapter(new MySearchRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
+
+
+        fabSearch = view.findViewById(R.id.fabSearch);
+        fabSearch.setOnClickListener(this);
+
         return view;
     }
 
@@ -91,6 +100,14 @@ public class SearchFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.fabSearch:
+                break;
+        }
     }
 
     /**
