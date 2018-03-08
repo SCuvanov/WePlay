@@ -11,11 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.marcoscg.dialogsheet.DialogSheet;
 import com.scuvanov.weplay.R;
 import com.scuvanov.weplay.fragment.dummy.DummyContent;
 import com.scuvanov.weplay.fragment.dummy.DummyContent.DummyItem;
-
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -31,6 +30,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private int mColumnCount = 2;
     private OnListFragmentInteractionListener mListener;
 
+    private final String TAG = SearchFragment.class.getCanonicalName();
     private FloatingActionButton fabSearch;
 
 
@@ -104,10 +104,30 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.fabSearch:
+                openSearchDialog();
                 break;
         }
+    }
+
+    private void openSearchDialog() {
+        DialogSheet dialogSheet = new DialogSheet(getActivity());
+        dialogSheet.setView(R.layout.dialog_search);
+        dialogSheet.setPositiveButton(android.R.string.ok, new DialogSheet.OnPositiveClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Your action
+            }
+        });
+        dialogSheet.setNegativeButton(android.R.string.cancel, new DialogSheet.OnNegativeClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Your action
+            }
+        });
+        dialogSheet.setButtonsColorRes(R.color.colorPrimary);
+        dialogSheet.show();
     }
 
     /**
