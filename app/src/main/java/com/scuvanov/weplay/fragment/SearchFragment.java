@@ -31,6 +31,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private OnListFragmentInteractionListener mListener;
 
     private final String TAG = SearchFragment.class.getCanonicalName();
+    private final String SEARCH_AND_FILTERS = "Search & Filters";
     private FloatingActionButton fabSearch;
 
 
@@ -126,7 +127,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                 // Your action
             }
         });
-        dialogSheet.setButtonsColorRes(R.color.colorPrimary);
+        dialogSheet.setButtonsColorRes(R.color.colorPrimaryDark);
+        dialogSheet.setTitle(SEARCH_AND_FILTERS);
         dialogSheet.show();
     }
 

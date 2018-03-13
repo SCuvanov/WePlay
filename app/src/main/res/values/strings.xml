@@ -13,4 +13,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Filter Buttons -->
+    <string name="title_filter_btn">Title</string>
+    <string name="genre_filter_btn">Genre</string>
+    <string name="platform_filter_btn">Platform</string>
+    <string name="esrb_filter_btn">ESRB</string>
+    <string name="rating_filter_btn">Rating</string>
+
 </resources>

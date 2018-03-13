@@ -5,10 +5,82 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button6"
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/titleFilterBtn"
+                style="@style/AppTheme.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_filter_btn" />
+
+            <Button
+                android:id="@+id/genreFilterBtn"
+                style="@style/AppTheme.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/genre_filter_btn" />
+
+            <Button
+                android:id="@+id/ratingFilterBtn"
+                style="@style/AppTheme.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/rating_filter_btn" />
+
+            <Button
+                android:id="@+id/platformFilterBtn"
+                style="@style/AppTheme.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/platform_filter_btn" />
+
+            <Button
+                android:id="@+id/esrbFilterBtn"
+                style="@style/AppTheme.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/esrb_filter_btn" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <EditText
+        android:id="@+id/etTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Title" />
 
+    <Spinner
+        android:id="@+id/spGenre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.appyvet.materialrangebar.RangeBar
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mrb_pinMaxFont="10sp"
+        app:mrb_rangeBarColor="@color/colorPrimary"
+        app:mrb_connectingLineColor="@color/colorPrimary"
+        app:mrb_rangeBarPaddingBottom="12dp"
+        app:mrb_selectorBoundaryColor="@color/colorPrimaryDark"
+        app:mrb_selectorBoundarySize="2dp"
+        app:mrb_pinTextColor="@color/colorPrimary"
+        app:mrb_pinColor="@color/colorPrimaryDark"
+        app:mrb_selectorColor="@color/colorPrimaryDark"
+        app:mrb_selectorSize="5dp"
+        app:mrb_tickEnd="100"
+        app:mrb_tickInterval="10"
+        app:mrb_tickStart="0"/>
 </LinearLayout>
