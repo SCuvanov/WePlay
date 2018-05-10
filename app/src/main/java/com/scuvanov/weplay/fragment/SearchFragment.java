@@ -7,10 +7,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
+import com.appyvet.materialrangebar.RangeBar;
 import com.marcoscg.dialogsheet.DialogSheet;
 import com.scuvanov.weplay.R;
 import com.scuvanov.weplay.fragment.dummy.DummyContent;
@@ -130,6 +135,35 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         dialogSheet.setButtonsColorRes(R.color.colorPrimaryDark);
         dialogSheet.setTitle(SEARCH_AND_FILTERS);
         dialogSheet.show();
+
+        View inflatedView = dialogSheet.getInflatedView();
+
+        EditText etTitle = inflatedView.findViewById(R.id.etTitle);
+        Spinner spGenre = inflatedView.findViewById(R.id.spGenre);
+        RangeBar rbRating = inflatedView.findViewById(R.id.rbRating);
+        Spinner spPlatform = inflatedView.findViewById(R.id.spPlatform);
+        //TODO: Define Spinner
+        Spinner spESRB = inflatedView.findViewById(R.id.spESRB);
+        //TODO: Define Spinner
+
+
+        Button btnTitleFilter = inflatedView.findViewById(R.id.btnTitleFilter);
+        btnTitleFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        Button btnGenreFilter = inflatedView.findViewById(R.id.btnGenreFilter);
+        Button btnRatingFilter = inflatedView.findViewById(R.id.btnRatingFilter);
+        Button btnPlatformFilterBtn = inflatedView.findViewById(R.id.btnPlatformFilterBtn);
+        Button btnESRBFilter =  inflatedView.findViewById(R.id.btnESRBFilter);
+
+
+    }
+
+    private void hideOrShow(){
+
     }
 
     /**

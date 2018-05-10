@@ -1,10 +1,10 @@
 package com.scuvanov.weplay;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -53,7 +53,7 @@ public class LauncherActivity extends AppCompatActivity {
         }
     }
 
-    public void goToLoginActivity(){
+    public void goToLoginActivity() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -64,7 +64,7 @@ public class LauncherActivity extends AppCompatActivity {
         }, 1000);
     }
 
-    public void goToMainActivity(){
+    public void goToMainActivity() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
