@@ -7,10 +7,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -20,6 +20,9 @@ import com.marcoscg.dialogsheet.DialogSheet;
 import com.scuvanov.weplay.R;
 import com.scuvanov.weplay.fragment.dummy.DummyContent;
 import com.scuvanov.weplay.fragment.dummy.DummyContent.DummyItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -38,6 +41,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private final String TAG = SearchFragment.class.getCanonicalName();
     private final String SEARCH_AND_FILTERS = "Search & Filters";
     private FloatingActionButton fabSearch;
+    private ArrayAdapter<CharSequence> spGenreAdapter, spPlatformAdapter, spESRBAdapter;
 
 
     /**
@@ -86,6 +90,19 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
         fabSearch = view.findViewById(R.id.fabSearch);
         fabSearch.setOnClickListener(this);
+
+
+        spGenreAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.genre_array, android.R.layout.simple_spinner_item);
+        spGenreAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spPlatformAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.platform_array, android.R.layout.simple_spinner_item);
+        spPlatformAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spESRBAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.esrb_array, android.R.layout.simple_spinner_item);
+        spESRBAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         return view;
     }
@@ -138,32 +155,70 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
         View inflatedView = dialogSheet.getInflatedView();
 
-        EditText etTitle = inflatedView.findViewById(R.id.etTitle);
-        Spinner spGenre = inflatedView.findViewById(R.id.spGenre);
-        RangeBar rbRating = inflatedView.findViewById(R.id.rbRating);
-        Spinner spPlatform = inflatedView.findViewById(R.id.spPlatform);
-        //TODO: Define Spinner
-        Spinner spESRB = inflatedView.findViewById(R.id.spESRB);
-        //TODO: Define Spinner
+        final EditText etTitle = inflatedView.findViewById(R.id.etTitle);
+        final Spinner spGenre = inflatedView.findViewById(R.id.spGenre);
+        spGenre.setAdapter(spGenreAdapter);
 
+        final RangeBar rbRating = inflatedView.findViewById(R.id.rbRating);
+        final Spinner spPlatform = inflatedView.findViewById(R.id.spPlatform);
+        spPlatform.setAdapter(spPlatformAdapter);
+
+        final Spinner spESRB = inflatedView.findViewById(R.id.spESRB);
+        spESRB.setAdapter(spESRBAdapter);
+
+        final List<View> dialogViews = new ArrayList<View>();
+        dialogViews.add(etTitle);
+        dialogViews.add(spGenre);
+        dialogViews.add(rbRating);
+        dialogViews.add(rbRating);
+        dialogViews.add(spPlatform);
+        dialogViews.add(spESRB);
 
         Button btnTitleFilter = inflatedView.findViewById(R.id.btnTitleFilter);
         btnTitleFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                hideAndShowViews(etTitle, dialogViews);
             }
         });
         Button btnGenreFilter = inflatedView.findViewById(R.id.btnGenreFilter);
+        btnGenreFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideAndShowViews(spGenre, dialogViews);
+            }
+        });
         Button btnRatingFilter = inflatedView.findViewById(R.id.btnRatingFilter);
+        btnRatingFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideAndShowViews(rbRating, dialogViews);
+            }
+        });
         Button btnPlatformFilterBtn = inflatedView.findViewById(R.id.btnPlatformFilterBtn);
-        Button btnESRBFilter =  inflatedView.findViewById(R.id.btnESRBFilter);
-
-
+        btnPlatformFilterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideAndShowViews(spPlatform, dialogViews);
+            }
+        });
+        Button btnESRBFilter = inflatedView.findViewById(R.id.btnESRBFilter);
+        btnESRBFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideAndShowViews(spESRB, dialogViews);
+            }
+        });
     }
 
-    private void hideOrShow(){
-
+    private void hideAndShowViews(View mainView, List<View> views) {
+        for (View v : views) {
+            if (v.getId() == mainView.getId()) {
+                mainView.setVisibility(View.VISIBLE);
+            } else {
+                v.setVisibility(View.GONE);
+            }
+        }
     }
 
     /**

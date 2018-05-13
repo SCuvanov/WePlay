@@ -21,4 +21,63 @@
     <string name="esrb_filter_btn">ESRB</string>
     <string name="rating_filter_btn">Rating</string>
 
+    <!-- Spinner Values -->
+    <string-array name="genre_array">
+        <item>Simulator</item>
+        <item>Sport</item>
+        <item>Strategy</item>
+        <item>Turn-based strategy (TBS)</item>
+        <item>Tactical</item>
+        <item>Hack and slash/Beat 'em up</item>
+        <item>Quiz/Trivia</item>
+        <item>Pinball</item>
+        <item>Adventure</item>
+        <item>Indie</item>
+        <item>Arcade</item>
+        <item>Point-and-click</item>
+        <item>Fighting</item>
+        <item>Shooter</item>
+        <item>Music</item>
+        <item>Platform</item>
+        <item>Puzzle</item>
+        <item>Racing</item>
+        <item>Real Time Strategy (RTS)</item>
+        <item>Role-playing (RPG)</item>
+    </string-array>
+
+    <string-array name="platform_array">
+        <item>Nintendo Entertainment System (NES)</item>
+        <item>Super Nintendo Entertainment System (SNES)</item>
+        <item>Nintendo DS</item>
+        <item>Nintendo GameCube</item>
+        <item>Game Boy Color</item>
+        <item>Dreamcast</item>
+        <item>Game Boy Advance</item>
+        <item>Sega Saturn</item>
+        <item>Game Boy</item>
+        <item>Android</item>
+        <item>Nintendo 3DS</item>
+        <item>Wii U</item>
+        <item>PlayStation Vita</item>
+        <item>PlayStation 4</item>
+        <item>Xbox One</item>
+        <item>Xbox</item>
+        <item>Xbox 360</item>
+        <item>Nintendo 64</item>
+        <item>Wii</item>
+        <item>PlayStation</item>
+        <item>PlayStation 2</item>
+        <item>PlayStation 3</item>
+        <item>PC</item>
+    </string-array>
+
+    <string-array name="esrb_array">
+        <item>RP</item>
+        <item>EC</item>
+        <item>E</item>
+        <item>E10+</item>
+        <item>T</item>
+        <item>M</item>
+        <item>AO</item>
+    </string-array>
 </resources>

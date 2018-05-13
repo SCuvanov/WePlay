@@ -39,6 +39,7 @@ public class SignInFragment extends Fragment {
 
     private EditText etEmail, etPassword;
     private Button btnLogin, btnSignUp;
+    private boolean isLoggingIn = false;
 
     public SignInFragment() {
         // Required empty public constructor
@@ -76,7 +77,10 @@ public class SignInFragment extends Fragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            if(!isLoggingIn) {
+                toggleIsLoggingIn(true);
                 login();
+            }
             }
         });
 
@@ -87,8 +91,6 @@ public class SignInFragment extends Fragment {
                 mListener.switchToSignUpFragment();
             }
         });
-
-
         return v;
     }
 
@@ -117,11 +119,15 @@ public class SignInFragment extends Fragment {
     }
 
     private void login() {
+
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
 
         //TODO: Add error messages, etc.
-        if (StringUtils.isBlank(email) || StringUtils.isBlank(password)) return;
+        if (StringUtils.isBlank(email) || StringUtils.isBlank(password)){
+            toggleIsLoggingIn(false);
+            return;
+        }
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
@@ -133,11 +139,19 @@ public class SignInFragment extends Fragment {
                                     Toast.LENGTH_SHORT).show();
                         }
 
+                        toggleIsLoggingIn(false);
+
                         Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
                         FirebaseUser user = mAuth.getCurrentUser();
-                        if(user != null) mListener.switchToMainActivity();
+                        if(user != null){
+                            mListener.switchToMainActivity();
+                        }
                     }
                 });
+    }
+
+    private void toggleIsLoggingIn(Boolean isLoggingIn){
+        this.isLoggingIn = isLoggingIn;
     }
 
     public interface OnSignInFragmentInteractionListener {

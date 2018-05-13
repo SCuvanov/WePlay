@@ -64,35 +64,38 @@
     <Spinner
         android:id="@+id/spGenre"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
-    <com.appyvet.materialrangebar.RangeBar
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.appyvet.materialrangebar.RangeBar xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rbRating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rbRating"
-        app:mrb_pinMaxFont="10sp"
-        app:mrb_rangeBarColor="@color/colorAccent"
+        android:visibility="gone"
         app:mrb_connectingLineColor="@color/colorAccent"
+        app:mrb_pinColor="@color/colorPrimaryDark"
+        app:mrb_pinMaxFont="10sp"
+        app:mrb_pinTextColor="@color/colorAccent"
+        app:mrb_rangeBarColor="@color/colorAccent"
         app:mrb_selectorBoundaryColor="@color/colorPrimaryDark"
         app:mrb_selectorBoundarySize="2dp"
-        app:mrb_pinTextColor="@color/colorAccent"
-        app:mrb_pinColor="@color/colorPrimaryDark"
         app:mrb_selectorColor="@color/colorPrimaryDark"
         app:mrb_selectorSize="5dp"
         app:mrb_tickEnd="100"
         app:mrb_tickInterval="10"
-        app:mrb_tickStart="0"/>
+        app:mrb_tickStart="0" />
 
     <Spinner
         android:id="@+id/spPlatform"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <Spinner
         android:id="@+id/spESRB"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
 
 </LinearLayout>
