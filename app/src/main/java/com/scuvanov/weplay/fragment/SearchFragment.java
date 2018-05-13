@@ -20,6 +20,7 @@ import com.marcoscg.dialogsheet.DialogSheet;
 import com.scuvanov.weplay.R;
 import com.scuvanov.weplay.fragment.dummy.DummyContent;
 import com.scuvanov.weplay.fragment.dummy.DummyContent.DummyItem;
+import com.scuvanov.weplay.util.APIUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,6 +136,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     }
 
     private void openSearchDialog() {
+        APIUtil.getGames(getActivity(), null, null, 0, 0, null, null);
         DialogSheet dialogSheet = new DialogSheet(getActivity());
         dialogSheet.setView(R.layout.dialog_search);
         dialogSheet.setPositiveButton(android.R.string.ok, new DialogSheet.OnPositiveClickListener() {

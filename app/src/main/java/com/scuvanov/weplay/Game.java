@@ -2,8 +2,9 @@ package com.scuvanov.weplay;
 
 public class Game {
 
-    int id, created_at, updated_at;
+    int id, created_at, updated_at, rating_count;
     String name, slug, url;
+    double rating;
 
     public int getId() {
         return id;
@@ -51,5 +52,21 @@ public class Game {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public int getRating_count() {
+        return rating_count;
+    }
+
+    public void setRating_count(int rating_count) {
+        this.rating_count = rating_count;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 }
