@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.scuvanov.weplay.database.AppDatabase;
 
 
 public class LauncherActivity extends AppCompatActivity {

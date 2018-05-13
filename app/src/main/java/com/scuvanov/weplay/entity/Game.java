@@ -1,4 +1,4 @@
-package com.scuvanov.weplay;
+package com.scuvanov.weplay.entity;
 
 public class Game {
 
