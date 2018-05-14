@@ -1,4 +1,4 @@
-package com.scuvanov.weplay;
+package com.scuvanov.weplay.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import com.scuvanov.weplay.R;
 import com.scuvanov.weplay.fragment.SignInFragment;
 import com.scuvanov.weplay.fragment.SignUpFragment;
 
@@ -17,7 +18,6 @@ public class EntryActivity extends AppCompatActivity implements SignUpFragment.O
 
     FragmentManager fm;
     FragmentTransaction ft;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

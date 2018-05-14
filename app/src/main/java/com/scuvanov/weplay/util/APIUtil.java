@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.igdb.api_android_java.callback.onSuccessCallback;
 import com.igdb.api_android_java.model.APIWrapper;
 import com.igdb.api_android_java.model.Parameters;
@@ -13,6 +15,8 @@ import com.scuvanov.weplay.entity.Platform;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +27,11 @@ import java.util.List;
 
 public class APIUtil {
     public static final String API_KEY = "df0301913ee9372f9f61519e91fabe4c";
-    public static final String API_BASE_URL = "https://api-endpoint.igdb.com/";
-    public static final String GAME_URL = API_BASE_URL + "games/?";
     private static final String GAME_FIELDS = "id, name, slug, url, created_at, updated_at, summary, rating, rating_count";
     private static final String GENRE_FIELDS = "id, name";
     private static final String PLATFORM_FIELDS = "id, name";
 
-    public static List<Genre> getGenres(Context context){
-        List<Genre> genres = new ArrayList<Genre>();
+    public static void getGenres(final Context context){
         APIWrapper wrapper = new APIWrapper(context, API_KEY);
 
         Parameters params = new Parameters();
@@ -40,18 +41,20 @@ public class APIUtil {
         wrapper.genres(params, new onSuccessCallback() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
-
+                Gson gson = new Gson();
+                Genre[] genres = gson.fromJson(jsonArray.toString(), Genre[].class);
+                //Insert DB
+                Genre.insertAll(context, genres);
             }
 
             @Override
             public void onError(VolleyError volleyError) {
-
+                Log.e("GENRES ERROR:", volleyError.toString());
             }
         });
-        return ((genres == null || genres.isEmpty()) ? null : genres);
     }
 
-    public static List<Platform> getPlatforms(Context context){
+    public static void getPlatforms(final Context context){
         List<Platform> platforms = new ArrayList<Platform>();
         APIWrapper wrapper = new APIWrapper(context, API_KEY);
 
@@ -62,7 +65,9 @@ public class APIUtil {
         wrapper.platforms(params, new onSuccessCallback() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
-
+                Gson gson = new Gson();
+                Platform[] platforms = gson.fromJson(jsonArray.toString(), Platform[].class);
+                Platform.insertAll(context, platforms);
             }
 
             @Override
@@ -70,7 +75,6 @@ public class APIUtil {
 
             }
         });
-        return ((platforms == null || platforms.isEmpty()) ? null : platforms);
     }
 
     public static List<Game> getGames(Context context, String title, String genre, int rangeLower, int rangeUpper, String platform, String esrb){

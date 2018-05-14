@@ -1,7 +1,9 @@
-package com.scuvanov.weplay;
+package com.scuvanov.weplay.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.scuvanov.weplay.R;
 
 public class UserActivity extends AppCompatActivity {
 

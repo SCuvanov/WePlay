@@ -44,11 +44,11 @@ public class Genre {
     }
 
     //Database Methods
-    public static Genre insertAll(Context context, Genre genre){
+    public static Genre[] insertAll(Context context, Genre... genres){
         AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
-        db.genreDao().insertAll(genre);
+        db.genreDao().insertAll(genres);
 
-        return genre;
+        return genres;
     }
 
     public static List<Genre> getAll(Context context){

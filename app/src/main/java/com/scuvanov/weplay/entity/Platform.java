@@ -44,11 +44,11 @@ public class Platform {
     }
 
     //Database Methods
-    public static Platform insertAll(Context context, Platform platform) {
+    public static Platform[] insertAll(Context context, Platform... platforms) {
         AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
-        db.platformDao().insertAll(platform);
+        db.platformDao().insertAll(platforms);
 
-        return platform;
+        return platforms;
     }
 
     public static List<Platform> getAll(Context context) {

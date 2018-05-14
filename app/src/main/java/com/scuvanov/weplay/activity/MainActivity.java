@@ -1,4 +1,4 @@
-package com.scuvanov.weplay;
+package com.scuvanov.weplay.activity;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.scuvanov.weplay.R;
 import com.scuvanov.weplay.dummy.DummyContent;
 import com.scuvanov.weplay.fragment.CollectionsFragment;
 import com.scuvanov.weplay.fragment.FeedFragment;
