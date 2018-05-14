@@ -7,6 +7,8 @@ import android.content.Context;
 
 import com.scuvanov.weplay.database.AppDatabase;
 
+import java.util.List;
+
 @Entity(indices = {@Index(value = {"id", "name"}, unique = true)})
 public class Platform {
 
@@ -42,10 +44,25 @@ public class Platform {
     }
 
     //Database Methods
-    public static Platform addPlatform(Context context, Platform platform){
+    public static Platform insertAll(Context context, Platform platform) {
         AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
         db.platformDao().insertAll(platform);
 
         return platform;
+    }
+
+    public static List<Platform> getAll(Context context) {
+        AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
+        return db.platformDao().getAll();
+    }
+
+    public static Platform findByName(Context context, String name) {
+        AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
+        return db.platformDao().findByName(name);
+    }
+
+    public static void delete(Context context, Platform platform) {
+        AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
+        db.platformDao().delete(platform);
     }
 }

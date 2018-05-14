@@ -7,6 +7,8 @@ import android.content.Context;
 
 import com.scuvanov.weplay.database.AppDatabase;
 
+import java.util.List;
+
 @Entity(indices = {@Index(value = {"id", "name"}, unique = true)})
 public class Genre {
 
@@ -42,10 +44,25 @@ public class Genre {
     }
 
     //Database Methods
-    public static Genre addGenre(Context context, Genre genre){
+    public static Genre insertAll(Context context, Genre genre){
         AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
         db.genreDao().insertAll(genre);
 
         return genre;
+    }
+
+    public static List<Genre> getAll(Context context){
+        AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
+        return db.genreDao().getAll();
+    }
+
+    public static Genre findByName(Context context, String name){
+        AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
+        return db.genreDao().findByName(name);
+    }
+
+    public static void delete(Context context, Genre genre){
+        AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
+        db.genreDao().delete(genre);
     }
 }
