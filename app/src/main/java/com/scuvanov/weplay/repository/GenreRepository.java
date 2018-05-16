@@ -10,7 +10,7 @@ import com.scuvanov.weplay.entity.Genre;
 
 import java.util.List;
 
-public class GenreRepository {
+public class GenreRepository extends BaseRepository {
 
     private final GenreDao genreDao;
 

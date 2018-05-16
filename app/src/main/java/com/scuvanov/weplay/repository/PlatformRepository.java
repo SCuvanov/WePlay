@@ -1,44 +1,44 @@
 package com.scuvanov.weplay.repository;
 
 import android.arch.lifecycle.LiveData;
-import android.content.Context;
 import android.os.AsyncTask;
 
-import com.scuvanov.weplay.database.AppDatabase;
+import com.scuvanov.weplay.dao.PlatformDao;
 import com.scuvanov.weplay.entity.Platform;
 
 import java.util.List;
 
-public class PlatformRepository {
+public class PlatformRepository extends BaseRepository {
+
+    private PlatformDao platformDao;
+
+    public PlatformRepository(PlatformDao platformDao) {
+        this.platformDao = platformDao;
+    }
 
     //Database Methods
-    public void insertAll(Context context, Platform... platforms) {
+    public void insertAll(Platform... platforms) {
         AsyncTask.execute(() -> { //Same as new Runnable()
-            AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
-            db.platformDao().insertAll(platforms);
+            platformDao.insertAll(platforms);
         });
     }
 
-    public void insertPlatform(Context context, Platform platform) {
+    public void insertPlatform(Platform platform) {
         AsyncTask.execute(() -> {
-            AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
-            db.platformDao().insertAll(platform);
+            platformDao.insertPlatform(platform);
         });
     }
 
-    public LiveData<List<Platform>> getAll(Context context) {
-        AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
-        return db.platformDao().getAll();
+    public LiveData<List<Platform>> getAll() {
+        return platformDao.getAll();
     }
 
-    public LiveData<Platform> findByName(Context context, String name) {
-        AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
-        return db.platformDao().findByName(name);
+    public LiveData<Platform> findByName(String name) {
+        return platformDao.findByName(name);
     }
 
-    public void delete(Context context, Platform platform) {
-        AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
-        db.platformDao().delete(platform);
+    public void delete(Platform platform) {
+        platformDao.delete(platform);
     }
 
 }

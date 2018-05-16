@@ -26,6 +26,8 @@ import com.scuvanov.weplay.entity.Genre;
 import com.scuvanov.weplay.fragment.dummy.DummyContent;
 import com.scuvanov.weplay.fragment.dummy.DummyContent.DummyItem;
 import com.scuvanov.weplay.repository.GenreRepository;
+import com.scuvanov.weplay.repository.RepositoryFactory;
+import com.scuvanov.weplay.repository.RepositoryFactory.RepositoryType;
 import com.scuvanov.weplay.util.APIUtil;
 import com.scuvanov.weplay.viewmodel.GenreViewModel;
 
@@ -100,9 +102,10 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         fabSearch.setOnClickListener(this);
 
 
-        AppDatabase db = AppDatabase.getAppDatabase(getActivity());
-        GenreRepository genreRepository = new GenreRepository(db.genreDao());
-        GenreViewModel genreViewModel = new GenreViewModel(genreRepository);
+        //AppDatabase db = AppDatabase.getAppDatabase(getActivity());
+        //GenreRepository genreRepository = new GenreRepository(db.genreDao());
+        RepositoryFactory rf = new RepositoryFactory(getActivity());
+        GenreViewModel genreViewModel = new GenreViewModel((GenreRepository) rf.getRepository(RepositoryType.GENRE));
         genreViewModel.getAll().observe(this, genres -> { //new Observer<List<Genre>>()
             for(Genre g : genres){
                 Log.e("GENRE", g.getName());
