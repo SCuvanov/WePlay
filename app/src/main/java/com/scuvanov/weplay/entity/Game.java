@@ -2,7 +2,8 @@ package com.scuvanov.weplay.entity;
 
 public class Game {
 
-    int id, created_at, updated_at, rating_count;
+    int id, created_at, updated_at, rating_count, hypes;
+    int[] platforms, genres;
     String name, slug, url;
     double rating;
 
@@ -68,5 +69,29 @@ public class Game {
 
     public void setRating(double rating) {
         this.rating = rating;
+    }
+
+    public int getHypes() {
+        return hypes;
+    }
+
+    public void setHypes(int hypes) {
+        this.hypes = hypes;
+    }
+
+    public int[] getPlatforms() {
+        return platforms;
+    }
+
+    public void setPlatforms(int[] platforms) {
+        this.platforms = platforms;
+    }
+
+    public int[] getGenres() {
+        return genres;
+    }
+
+    public void setGenres(int[] genres) {
+        this.genres = genres;
     }
 }

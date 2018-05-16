@@ -53,6 +53,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private FloatingActionButton fabSearch;
     private ArrayAdapter<CharSequence> spGenreAdapter, spPlatformAdapter, spESRBAdapter;
 
+    private List<Genre> genreList = new ArrayList<Genre>();
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -97,22 +99,19 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             recyclerView.setAdapter(new MySearchRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
 
-
         fabSearch = view.findViewById(R.id.fabSearch);
         fabSearch.setOnClickListener(this);
 
 
         //AppDatabase db = AppDatabase.getAppDatabase(getActivity());
         //GenreRepository genreRepository = new GenreRepository(db.genreDao());
-        RepositoryFactory rf = new RepositoryFactory(getActivity());
-        GenreViewModel genreViewModel = new GenreViewModel((GenreRepository) rf.getRepository(RepositoryType.GENRE));
+        //RepositoryFactory rf = new RepositoryFactory(getActivity());
+        GenreViewModel genreViewModel = new GenreViewModel((GenreRepository) RepositoryFactory.getRepository(getActivity(), RepositoryType.GENRE));
         genreViewModel.getAll().observe(this, genres -> { //new Observer<List<Genre>>()
             for(Genre g : genres){
                 Log.e("GENRE", g.getName());
             }
         });
-
-
 
 
         spGenreAdapter = ArrayAdapter.createFromResource(getActivity(),

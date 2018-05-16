@@ -9,14 +9,19 @@ import com.igdb.api_android_java.callback.onSuccessCallback;
 import com.igdb.api_android_java.model.APIWrapper;
 import com.igdb.api_android_java.model.Parameters;
 import com.scuvanov.weplay.database.AppDatabase;
+import com.scuvanov.weplay.entity.Game;
 import com.scuvanov.weplay.entity.Genre;
 import com.scuvanov.weplay.entity.Platform;
 import com.scuvanov.weplay.repository.GenreRepository;
 import com.scuvanov.weplay.repository.PlatformRepository;
+import com.scuvanov.weplay.repository.RepositoryFactory;
+import com.scuvanov.weplay.repository.RepositoryFactory.RepositoryType;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,6 +32,7 @@ public class APIUtil {
     public static final String API_KEY = "df0301913ee9372f9f61519e91fabe4c";
     private static final String GENRE_FIELDS = "id, name";
     private static final String PLATFORM_FIELDS = "id, name";
+    private static final String GAME_FIELDS = "id, name, url, hypes, rating, rating_count";
 
     public static void getGenres(Context context) {
         APIWrapper wrapper = new APIWrapper(context, API_KEY);
@@ -41,8 +47,9 @@ public class APIUtil {
                 Gson gson = new Gson();
                 Genre[] genres = gson.fromJson(jsonArray.toString(), Genre[].class);
                 //Insert DB
-                AppDatabase db = AppDatabase.getAppDatabase(context);
-                GenreRepository genreRepository = new GenreRepository(db.genreDao());
+                /*AppDatabase db = AppDatabase.getAppDatabase(context);
+                GenreRepository genreRepository = new GenreRepository(db.genreDao());*/
+                GenreRepository genreRepository = (GenreRepository) RepositoryFactory.getRepository(context, RepositoryType.GENRE);
                 genreRepository.insertAll(genres);
             }
 
@@ -66,8 +73,9 @@ public class APIUtil {
                 Gson gson = new Gson();
                 Platform[] platforms = gson.fromJson(jsonArray.toString(), Platform[].class);
                 //Insert DB
-                PlatformRepository platformRepository = new PlatformRepository();
-                platformRepository.insertAll(context, platforms);
+                //PlatformRepository platformRepository = new PlatformRepository();
+                PlatformRepository platformRepository = (PlatformRepository) RepositoryFactory.getRepository(context, RepositoryType.PLATFORM);
+                platformRepository.insertAll(platforms);
             }
 
             @Override
@@ -77,38 +85,42 @@ public class APIUtil {
         });
     }
 
-    /*
-    public static List<Game> getGames(Context context, String title, String genre, int rangeLower, int rangeUpper, String platform, String esrb) {
+    public static List<Game> getGames(Context context, String title, Integer genreId, Integer platformId, Integer esrbId, Integer rangeLower, Integer rangeUpper) {
+        List<Game> gamesList = new ArrayList<Game>();
         APIWrapper wrapper = new APIWrapper(context, API_KEY);
+
         Parameters params = new Parameters();
         params.addFields(GAME_FIELDS);
 
         if (!StringUtils.isBlank(title)) {
-            //params.addFilter();
+            params.addSearch(title);
         }
-        if (!StringUtils.isBlank(platform)) {
-            int platform_id = 0;
-            params.addFilter("[platforms][eq]=" + platform_id);
+        if (genreId != null) {
+            params.addFilter("[genres][eq]=" + genreId);
         }
-        if (!StringUtils.isBlank(esrb)) {
-            int esrb_id = 0;
-            params.addFilter("[esrb][eq]=" + esrb_id);
+        if (platformId != null) {
+            params.addFilter("[platforms][eq]=" + platformId);
+        }
+        if (esrbId != null) {
+            params.addFilter("[esrb][eq]=" + esrbId);
         }
 
         wrapper.games(params, new onSuccessCallback() {
             @Override
-            public void onSuccess(JSONArray result) {
-                Log.e("RESPONSE: ", result.toString());
+            public void onSuccess(JSONArray jsonArray) {
+                Gson gson = new Gson();
+                Game[] games = gson.fromJson(jsonArray.toString(), Game[].class);
+
+                gamesList.addAll(Arrays.asList(games));
             }
 
             @Override
             public void onError(VolleyError error) {
                 // Do something on error
-                Log.e("RESPONSE: ", error.toString());
+                Log.e("GAMES ERROR: ", error.toString());
             }
         });
 
-        return null;
+        return ((gamesList == null || gamesList.isEmpty()) ? null : gamesList);
     }
-    */
 }
