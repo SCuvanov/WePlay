@@ -38,7 +38,9 @@ import com.scuvanov.weplay.viewmodel.GenreViewModel;
 import com.scuvanov.weplay.viewmodel.PlatformViewModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A fragment representing a list of Items.
@@ -57,9 +59,15 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private final String TAG = SearchFragment.class.getCanonicalName();
     private final String SEARCH_AND_FILTERS = "Search & Filters";
     private FloatingActionButton fabSearch;
-    private ArrayAdapter<CharSequence> spGenreAdapter, spPlatformAdapter, spESRBAdapter;
+    private ArrayAdapter<String> spGenreAdapter, spPlatformAdapter, spESRBAdapter;
 
-    private List<Genre> genreList = new ArrayList<Genre>();
+    private List<String> genreList = new ArrayList<String>();
+    private Map<String, Integer> genreMap = new HashMap<String, Integer>();
+    private List<String> platformList = new ArrayList<String>();
+    private Map<String, Integer> platformMap = new HashMap<String, Integer>();
+    private List<String> esrbList = new ArrayList<String>();
+    private Map<String, Integer> esrbMap = new HashMap<String, Integer>();
+
 
 
     /**
@@ -108,48 +116,46 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         fabSearch = view.findViewById(R.id.fabSearch);
         fabSearch.setOnClickListener(this);
 
+        spGenreAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, genreList);
+        spGenreAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        //AppDatabase db = AppDatabase.getAppDatabase(getActivity());
-        //GenreRepository genreRepository = new GenreRepository(db.genreDao());
-        //RepositoryFactory rf = new RepositoryFactory(getActivity());
-        GenreViewModel genreViewModel = new GenreViewModel((GenreRepository) RepositoryFactory.getRepository(getActivity(), RepositoryType.GENRE));
+        GenreViewModel genreViewModel = new GenreViewModel(RepositoryFactory.getGenreRepository(getActivity()));
         genreViewModel.getAll().observe(this, genres -> { //new Observer<List<Genre>>()
-            for(Genre g : genres){
-                Log.e("GENRE", g.getName());
-            }
+            genreList.clear();
 
-            //TODO: Possibly create this with dummy values, then populate with DB.
-            spGenreAdapter = ArrayAdapter.createFromResource(getActivity(),
-                    R.array.genre_array, android.R.layout.simple_spinner_item);
-            spGenreAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            for(Genre g : genres) {
+                genreList.add(g.getName());
+                genreMap.put(g.getName(), g.getId());
+            }
+            spGenreAdapter.notifyDataSetChanged();
         });
 
-        PlatformViewModel platformViewModel =  new PlatformViewModel((PlatformRepository) RepositoryFactory.getRepository(getActivity(), RepositoryType.PLATFORM));
-        platformViewModel.getAll().observe(this, new Observer<List<Platform>>() {
-            @Override
-            public void onChanged(@Nullable List<Platform> platforms) {
-                for(Platform p : platforms){
-                    Log.e("PLATFORM", p.getName());
-                }
+        spPlatformAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, platformList);
+        spPlatformAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-                spPlatformAdapter = ArrayAdapter.createFromResource(getActivity(),
-                        R.array.platform_array, android.R.layout.simple_spinner_item);
-                spPlatformAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        PlatformViewModel platformViewModel =  new PlatformViewModel(RepositoryFactory.getPlatformRepository(getActivity()));
+        platformViewModel.getAll().observe(this, platforms -> {
+            platformList.clear();
+
+            for(Platform p : platforms) {
+                platformList.add(p.getName());
+                platformMap.put(p.getName(), p.getId());
             }
+            spPlatformAdapter.notifyDataSetChanged();
         });
 
-        EsrbViewModel esrbViewModel = new EsrbViewModel((EsrbRepository) RepositoryFactory.getRepository(getActivity(), RepositoryType.ESRB));
-        esrbViewModel.getAll().observe(this, new Observer<List<Esrb>>() {
-            @Override
-            public void onChanged(@Nullable List<Esrb> esrbs) {
-                for(Esrb e : esrbs){
-                    Log.e("ESRB", e.getName());
-                }
+        spESRBAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, esrbList);
+        spESRBAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-                spESRBAdapter = ArrayAdapter.createFromResource(getActivity(),
-                        R.array.esrb_array, android.R.layout.simple_spinner_item);
-                spESRBAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        EsrbViewModel esrbViewModel = new EsrbViewModel(RepositoryFactory.getEsrbRepository(getActivity()));
+        esrbViewModel.getAll().observe(this, esrbs -> {
+            esrbList.clear();
+
+            for(Esrb e : esrbs) {
+                esrbList.add(e.getName());
+                esrbMap.put(e.getName(), e.getId());
             }
+            spESRBAdapter.notifyDataSetChanged();
         });
 
         return view;

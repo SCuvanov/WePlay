@@ -14,10 +14,10 @@ import java.util.List;
 @Dao
 public interface GenreDao {
 
-    @Query("SELECT * FROM Genre")
+    @Query("SELECT * FROM Genre ORDER BY name ASC")
     LiveData<List<Genre>> getAll();
 
-    @Query("SELECT * FROM Genre WHERE gid IN (:genreIds)")
+    @Query("SELECT * FROM Genre WHERE id IN (:genreIds)")
     LiveData<List<Genre>> loadAllByIds(int[] genreIds);
 
     @Query("SELECT * FROM Genre WHERE name LIKE :name LIMIT 1")

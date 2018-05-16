@@ -50,9 +50,7 @@ public class APIUtil {
                 Gson gson = new Gson();
                 Genre[] genres = gson.fromJson(jsonArray.toString(), Genre[].class);
                 //Insert DB
-                /*AppDatabase db = AppDatabase.getAppDatabase(context);
-                GenreRepository genreRepository = new GenreRepository(db.genreDao());*/
-                GenreRepository genreRepository = (GenreRepository) RepositoryFactory.getRepository(context, RepositoryType.GENRE);
+                GenreRepository genreRepository = RepositoryFactory.getGenreRepository(context);
                 genreRepository.insertAll(genres);
             }
 
@@ -75,9 +73,7 @@ public class APIUtil {
             public void onSuccess(JSONArray jsonArray) {
                 Gson gson = new Gson();
                 Platform[] platforms = gson.fromJson(jsonArray.toString(), Platform[].class);
-                //Insert DB
-                //PlatformRepository platformRepository = new PlatformRepository();
-                PlatformRepository platformRepository = (PlatformRepository) RepositoryFactory.getRepository(context, RepositoryType.PLATFORM);
+                PlatformRepository platformRepository = RepositoryFactory.getPlatformRepository(context);
                 platformRepository.insertAll(platforms);
             }
 
@@ -89,27 +85,17 @@ public class APIUtil {
     }
 
     public static void getEsrbs(Context context){
-        APIWrapper wrapper = new APIWrapper(context, API_KEY);
+        int[] ids = new int[]{1, 2, 3, 4, 5, 6, 7};
+        String[] values = new String[]{"RP", "EC", "E", "E10+", "T", "M", "AO"};
+        Esrb[] esrbs = new Esrb[7];
 
-        Parameters params = new Parameters();
-        params.addFields(ESRB_FIELDS);
-        params.addLimit("50");
+        for(int i = 0; i < ids.length; i++){
+            Esrb esrb = new Esrb(ids[i], values[i]);
+            esrbs[i] = esrb;
+        }
 
-        wrapper.platforms(params, new onSuccessCallback() {
-            @Override
-            public void onSuccess(JSONArray jsonArray) {
-                Gson gson = new Gson();
-                Esrb[] esrbs = gson.fromJson(jsonArray.toString(), Esrb[].class);
-                //Insert DB
-                EsrbRepository esrbRepository = (EsrbRepository) RepositoryFactory.getRepository(context, RepositoryType.ESRB);
-                esrbRepository.insertAll(esrbs);
-            }
-
-            @Override
-            public void onError(VolleyError volleyError) {
-                Log.e("ESRBS ERROR:", volleyError.toString());
-            }
-        });
+        EsrbRepository esrbRepository = RepositoryFactory.getEsrbRepository(context);
+        esrbRepository.insertAll(esrbs);
     }
 
     public static List<Game> getGames(Context context, String title, Integer genreId, Integer platformId, Integer esrbId, Integer rangeLower, Integer rangeUpper) {

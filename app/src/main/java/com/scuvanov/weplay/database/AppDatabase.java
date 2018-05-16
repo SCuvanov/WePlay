@@ -8,10 +8,11 @@ import android.content.Context;
 import com.scuvanov.weplay.dao.EsrbDao;
 import com.scuvanov.weplay.dao.GenreDao;
 import com.scuvanov.weplay.dao.PlatformDao;
+import com.scuvanov.weplay.entity.Esrb;
 import com.scuvanov.weplay.entity.Genre;
 import com.scuvanov.weplay.entity.Platform;
 
-@Database(entities = {Genre.class, Platform.class}, version = 1, exportSchema = false)
+@Database(entities = {Genre.class, Platform.class, Esrb.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;

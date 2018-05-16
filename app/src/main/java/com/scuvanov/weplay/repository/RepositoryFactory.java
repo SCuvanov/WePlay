@@ -14,13 +14,18 @@ public class RepositoryFactory {
 
     private RepositoryFactory() {}
 
-    public static BaseRepository getRepository(Context context, RepositoryType repositoryType) {
+    public static GenreRepository getGenreRepository(Context context) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
+        return new GenreRepository(db.genreDao());
+    }
 
-        if (repositoryType == RepositoryType.GENRE) new GenreRepository(db.genreDao());
-        if (repositoryType == RepositoryType.PLATFORM) new PlatformRepository(db.platformDao());
-        if (repositoryType == RepositoryType.ESRB) new EsrbRepository(db.esrbDao());
+    public static PlatformRepository getPlatformRepository(Context context){
+        AppDatabase db = AppDatabase.getAppDatabase(context);
+        return new PlatformRepository(db.platformDao());
+    }
 
-        return null;
+    public static EsrbRepository getEsrbRepository(Context context){
+        AppDatabase db = AppDatabase.getAppDatabase(context);
+        return new EsrbRepository(db.esrbDao());
     }
 }

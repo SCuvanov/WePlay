@@ -9,18 +9,13 @@ import android.support.annotation.NonNull;
 public class Esrb {
 
     @PrimaryKey
-    int eid;
-
     @NonNull
-    int id;
-    String name;
+    private int id;
+    private String name;
 
-    public int getEid() {
-        return eid;
-    }
-
-    public void setEid(int eid) {
-        this.eid = eid;
+    public Esrb(@NonNull int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public int getId() {

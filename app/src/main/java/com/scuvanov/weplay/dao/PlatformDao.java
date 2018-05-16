@@ -14,10 +14,10 @@ import java.util.List;
 @Dao
 public interface PlatformDao {
 
-    @Query("SELECT * FROM Platform")
+    @Query("SELECT * FROM Platform ORDER BY name ASC")
     LiveData<List<Platform>> getAll();
 
-    @Query("SELECT * FROM Platform WHERE pid IN (:platformIds)")
+    @Query("SELECT * FROM Platform WHERE id IN (:platformIds)")
     LiveData<List<Platform>> loadAllByIds(int[] platformIds);
 
     @Query("SELECT * FROM Platform WHERE name LIKE :name LIMIT 1")

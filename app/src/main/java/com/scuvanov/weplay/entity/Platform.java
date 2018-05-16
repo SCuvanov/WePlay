@@ -3,24 +3,15 @@ package com.scuvanov.weplay.entity;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 @Entity(indices = {@Index(value = {"id", "name"}, unique = true)})
 public class Platform {
 
     @PrimaryKey
-    private int pid;
-
-    //@ColumnInfo(name = "id") By Default, no need to annotate
+    @NonNull
     private int id;
     private String name;
-
-    public int getPid() {
-        return pid;
-    }
-
-    public void setPid(int pid) {
-        this.pid = pid;
-    }
 
     public int getId() {
         return id;

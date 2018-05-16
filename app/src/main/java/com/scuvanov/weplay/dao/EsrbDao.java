@@ -17,7 +17,7 @@ public interface EsrbDao {
     @Query("SELECT * FROM Esrb")
     LiveData<List<Esrb>> getAll();
 
-    @Query("SELECT * FROM Esrb WHERE eid IN (:esrbIds)")
+    @Query("SELECT * FROM Esrb WHERE id IN (:esrbIds)")
     LiveData<List<Esrb>> loadAllByIds(int[] esrbIds);
 
     @Query("SELECT * FROM Esrb WHERE name LIKE :name LIMIT 1")

@@ -9,20 +9,9 @@ import android.support.annotation.NonNull;
 public class Genre {
 
     @PrimaryKey
-    private int gid;
-
-    //@ColumnInfo(name = "id") By Default - No need to annotate
     @NonNull
-    private int id;
+    private int id; //@ColumnInfo(name = "id") By Default - No need to annotate
     private String name;
-
-    public int getGid() {
-        return gid;
-    }
-
-    public void setGid(int gid) {
-        this.gid = gid;
-    }
 
     public int getId() {
         return id;
