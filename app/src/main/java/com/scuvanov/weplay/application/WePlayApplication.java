@@ -10,8 +10,10 @@ public class WePlayApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        //Retrieve values from Database
+        //TODO: Perhaps verify if values exist in DB, if they do.. don't make another call.
+        //Retrieve values from IGDB API
         APIUtil.getGenres(getApplicationContext());
         APIUtil.getPlatforms(getApplicationContext());
+        APIUtil.getEsrbs(getApplicationContext());
     }
 }

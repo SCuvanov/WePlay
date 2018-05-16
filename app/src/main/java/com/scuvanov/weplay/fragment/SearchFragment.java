@@ -22,14 +22,20 @@ import com.appyvet.materialrangebar.RangeBar;
 import com.marcoscg.dialogsheet.DialogSheet;
 import com.scuvanov.weplay.R;
 import com.scuvanov.weplay.database.AppDatabase;
+import com.scuvanov.weplay.entity.Esrb;
 import com.scuvanov.weplay.entity.Genre;
+import com.scuvanov.weplay.entity.Platform;
 import com.scuvanov.weplay.fragment.dummy.DummyContent;
 import com.scuvanov.weplay.fragment.dummy.DummyContent.DummyItem;
+import com.scuvanov.weplay.repository.EsrbRepository;
 import com.scuvanov.weplay.repository.GenreRepository;
+import com.scuvanov.weplay.repository.PlatformRepository;
 import com.scuvanov.weplay.repository.RepositoryFactory;
 import com.scuvanov.weplay.repository.RepositoryFactory.RepositoryType;
 import com.scuvanov.weplay.util.APIUtil;
+import com.scuvanov.weplay.viewmodel.EsrbViewModel;
 import com.scuvanov.weplay.viewmodel.GenreViewModel;
+import com.scuvanov.weplay.viewmodel.PlatformViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,20 +117,40 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             for(Genre g : genres){
                 Log.e("GENRE", g.getName());
             }
+
+            //TODO: Possibly create this with dummy values, then populate with DB.
+            spGenreAdapter = ArrayAdapter.createFromResource(getActivity(),
+                    R.array.genre_array, android.R.layout.simple_spinner_item);
+            spGenreAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         });
 
+        PlatformViewModel platformViewModel =  new PlatformViewModel((PlatformRepository) RepositoryFactory.getRepository(getActivity(), RepositoryType.PLATFORM));
+        platformViewModel.getAll().observe(this, new Observer<List<Platform>>() {
+            @Override
+            public void onChanged(@Nullable List<Platform> platforms) {
+                for(Platform p : platforms){
+                    Log.e("PLATFORM", p.getName());
+                }
 
-        spGenreAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.genre_array, android.R.layout.simple_spinner_item);
-        spGenreAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spPlatformAdapter = ArrayAdapter.createFromResource(getActivity(),
+                        R.array.platform_array, android.R.layout.simple_spinner_item);
+                spPlatformAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            }
+        });
 
-        spPlatformAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.platform_array, android.R.layout.simple_spinner_item);
-        spPlatformAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        EsrbViewModel esrbViewModel = new EsrbViewModel((EsrbRepository) RepositoryFactory.getRepository(getActivity(), RepositoryType.ESRB));
+        esrbViewModel.getAll().observe(this, new Observer<List<Esrb>>() {
+            @Override
+            public void onChanged(@Nullable List<Esrb> esrbs) {
+                for(Esrb e : esrbs){
+                    Log.e("ESRB", e.getName());
+                }
 
-        spESRBAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.esrb_array, android.R.layout.simple_spinner_item);
-        spESRBAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spESRBAdapter = ArrayAdapter.createFromResource(getActivity(),
+                        R.array.esrb_array, android.R.layout.simple_spinner_item);
+                spESRBAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            }
+        });
 
         return view;
     }
@@ -197,40 +223,19 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         dialogViews.add(spESRB);
 
         Button btnTitleFilter = inflatedView.findViewById(R.id.btnTitleFilter);
-        btnTitleFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideAndShowViews(etTitle, dialogViews);
-            }
-        });
+        btnTitleFilter.setOnClickListener(view -> hideAndShowViews(etTitle, dialogViews)); //new View.OnClickListener()
+
         Button btnGenreFilter = inflatedView.findViewById(R.id.btnGenreFilter);
-        btnGenreFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideAndShowViews(spGenre, dialogViews);
-            }
-        });
+        btnGenreFilter.setOnClickListener(view -> hideAndShowViews(spGenre, dialogViews));
+
         Button btnRatingFilter = inflatedView.findViewById(R.id.btnRatingFilter);
-        btnRatingFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideAndShowViews(rbRating, dialogViews);
-            }
-        });
+        btnRatingFilter.setOnClickListener(view -> hideAndShowViews(rbRating, dialogViews));
+
         Button btnPlatformFilterBtn = inflatedView.findViewById(R.id.btnPlatformFilterBtn);
-        btnPlatformFilterBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideAndShowViews(spPlatform, dialogViews);
-            }
-        });
+        btnPlatformFilterBtn.setOnClickListener(view -> hideAndShowViews(spPlatform, dialogViews));
+
         Button btnESRBFilter = inflatedView.findViewById(R.id.btnESRBFilter);
-        btnESRBFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideAndShowViews(spESRB, dialogViews);
-            }
-        });
+        btnESRBFilter.setOnClickListener(view -> hideAndShowViews(spESRB, dialogViews));
     }
 
     private void hideAndShowViews(View mainView, List<View> views) {

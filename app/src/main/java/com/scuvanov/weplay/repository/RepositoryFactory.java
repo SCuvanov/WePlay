@@ -8,7 +8,8 @@ public class RepositoryFactory {
 
     public enum RepositoryType {
         GENRE,
-        PLATFORM
+        PLATFORM,
+        ESRB
     }
 
     private RepositoryFactory() {}
@@ -18,6 +19,8 @@ public class RepositoryFactory {
 
         if (repositoryType == RepositoryType.GENRE) new GenreRepository(db.genreDao());
         if (repositoryType == RepositoryType.PLATFORM) new PlatformRepository(db.platformDao());
+        if (repositoryType == RepositoryType.ESRB) new EsrbRepository(db.esrbDao());
+
         return null;
     }
 }

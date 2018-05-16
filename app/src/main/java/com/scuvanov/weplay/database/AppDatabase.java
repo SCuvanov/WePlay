@@ -5,6 +5,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import com.scuvanov.weplay.dao.EsrbDao;
 import com.scuvanov.weplay.dao.GenreDao;
 import com.scuvanov.weplay.dao.PlatformDao;
 import com.scuvanov.weplay.entity.Genre;
@@ -18,6 +19,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract GenreDao genreDao();
     public abstract PlatformDao platformDao();
+    public abstract EsrbDao esrbDao();
 
     public static AppDatabase getAppDatabase(Context context) {
         if (INSTANCE == null) {

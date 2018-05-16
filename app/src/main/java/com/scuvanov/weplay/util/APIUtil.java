@@ -9,9 +9,11 @@ import com.igdb.api_android_java.callback.onSuccessCallback;
 import com.igdb.api_android_java.model.APIWrapper;
 import com.igdb.api_android_java.model.Parameters;
 import com.scuvanov.weplay.database.AppDatabase;
+import com.scuvanov.weplay.entity.Esrb;
 import com.scuvanov.weplay.entity.Game;
 import com.scuvanov.weplay.entity.Genre;
 import com.scuvanov.weplay.entity.Platform;
+import com.scuvanov.weplay.repository.EsrbRepository;
 import com.scuvanov.weplay.repository.GenreRepository;
 import com.scuvanov.weplay.repository.PlatformRepository;
 import com.scuvanov.weplay.repository.RepositoryFactory;
@@ -32,6 +34,7 @@ public class APIUtil {
     public static final String API_KEY = "df0301913ee9372f9f61519e91fabe4c";
     private static final String GENRE_FIELDS = "id, name";
     private static final String PLATFORM_FIELDS = "id, name";
+    private static final String ESRB_FIELDS = "id, name";
     private static final String GAME_FIELDS = "id, name, url, hypes, rating, rating_count";
 
     public static void getGenres(Context context) {
@@ -81,6 +84,30 @@ public class APIUtil {
             @Override
             public void onError(VolleyError volleyError) {
                 Log.e("PLATFORMS ERROR:", volleyError.toString());
+            }
+        });
+    }
+
+    public static void getEsrbs(Context context){
+        APIWrapper wrapper = new APIWrapper(context, API_KEY);
+
+        Parameters params = new Parameters();
+        params.addFields(ESRB_FIELDS);
+        params.addLimit("50");
+
+        wrapper.platforms(params, new onSuccessCallback() {
+            @Override
+            public void onSuccess(JSONArray jsonArray) {
+                Gson gson = new Gson();
+                Esrb[] esrbs = gson.fromJson(jsonArray.toString(), Esrb[].class);
+                //Insert DB
+                EsrbRepository esrbRepository = (EsrbRepository) RepositoryFactory.getRepository(context, RepositoryType.ESRB);
+                esrbRepository.insertAll(esrbs);
+            }
+
+            @Override
+            public void onError(VolleyError volleyError) {
+                Log.e("ESRBS ERROR:", volleyError.toString());
             }
         });
     }
