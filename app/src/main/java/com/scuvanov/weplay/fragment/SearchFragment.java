@@ -1,12 +1,15 @@
 package com.scuvanov.weplay.fragment;
 
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +21,13 @@ import android.widget.Spinner;
 import com.appyvet.materialrangebar.RangeBar;
 import com.marcoscg.dialogsheet.DialogSheet;
 import com.scuvanov.weplay.R;
+import com.scuvanov.weplay.database.AppDatabase;
+import com.scuvanov.weplay.entity.Genre;
 import com.scuvanov.weplay.fragment.dummy.DummyContent;
 import com.scuvanov.weplay.fragment.dummy.DummyContent.DummyItem;
+import com.scuvanov.weplay.repository.GenreRepository;
 import com.scuvanov.weplay.util.APIUtil;
+import com.scuvanov.weplay.viewmodel.GenreViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,6 +100,18 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         fabSearch.setOnClickListener(this);
 
 
+        AppDatabase db = AppDatabase.getAppDatabase(getActivity());
+        GenreRepository genreRepository = new GenreRepository(db.genreDao());
+        GenreViewModel genreViewModel = new GenreViewModel(genreRepository);
+        genreViewModel.getAll().observe(this, genres -> { //new Observer<List<Genre>>()
+            for(Genre g : genres){
+                Log.e("GENRE", g.getName());
+            }
+        });
+
+
+
+
         spGenreAdapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.genre_array, android.R.layout.simple_spinner_item);
         spGenreAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -136,7 +155,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     }
 
     private void openSearchDialog() {
-        APIUtil.getGames(getActivity(), null, null, 0, 0, null, null);
         DialogSheet dialogSheet = new DialogSheet(getActivity());
         dialogSheet.setView(R.layout.dialog_search);
         dialogSheet.setPositiveButton(android.R.string.ok, new DialogSheet.OnPositiveClickListener() {

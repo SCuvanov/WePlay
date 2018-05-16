@@ -3,11 +3,7 @@ package com.scuvanov.weplay.entity;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
-import android.content.Context;
-
-import com.scuvanov.weplay.database.AppDatabase;
-
-import java.util.List;
+import android.support.annotation.NonNull;
 
 @Entity(indices = {@Index(value = {"id", "name"}, unique = true)})
 public class Genre {
@@ -16,6 +12,7 @@ public class Genre {
     private int gid;
 
     //@ColumnInfo(name = "id") By Default - No need to annotate
+    @NonNull
     private int id;
     private String name;
 
@@ -41,28 +38,5 @@ public class Genre {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    //Database Methods
-    public static Genre[] insertAll(Context context, Genre... genres){
-        AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
-        db.genreDao().insertAll(genres);
-
-        return genres;
-    }
-
-    public static List<Genre> getAll(Context context){
-        AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
-        return db.genreDao().getAll();
-    }
-
-    public static Genre findByName(Context context, String name){
-        AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
-        return db.genreDao().findByName(name);
-    }
-
-    public static void delete(Context context, Genre genre){
-        AppDatabase db = AppDatabase.getAppDatabase(context.getApplicationContext());
-        db.genreDao().delete(genre);
     }
 }

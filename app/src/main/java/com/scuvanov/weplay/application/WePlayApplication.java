@@ -2,10 +2,7 @@ package com.scuvanov.weplay.application;
 
 import android.app.Application;
 
-import com.scuvanov.weplay.entity.Genre;
 import com.scuvanov.weplay.util.APIUtil;
-
-import java.util.List;
 
 public class WePlayApplication extends Application {
 
@@ -13,7 +10,8 @@ public class WePlayApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        APIUtil.getGenres(this);
-        APIUtil.getPlatforms(this);
+        //Retrieve values from Database
+        APIUtil.getGenres(getApplicationContext());
+        APIUtil.getPlatforms(getApplicationContext());
     }
 }

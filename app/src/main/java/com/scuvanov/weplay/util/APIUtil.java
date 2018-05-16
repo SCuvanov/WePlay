@@ -5,18 +5,16 @@ import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.igdb.api_android_java.callback.onSuccessCallback;
 import com.igdb.api_android_java.model.APIWrapper;
 import com.igdb.api_android_java.model.Parameters;
-import com.scuvanov.weplay.entity.Game;
+import com.scuvanov.weplay.database.AppDatabase;
 import com.scuvanov.weplay.entity.Genre;
 import com.scuvanov.weplay.entity.Platform;
+import com.scuvanov.weplay.repository.GenreRepository;
+import com.scuvanov.weplay.repository.PlatformRepository;
 
-import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +25,10 @@ import java.util.List;
 
 public class APIUtil {
     public static final String API_KEY = "df0301913ee9372f9f61519e91fabe4c";
-    private static final String GAME_FIELDS = "id, name, slug, url, created_at, updated_at, summary, rating, rating_count";
     private static final String GENRE_FIELDS = "id, name";
     private static final String PLATFORM_FIELDS = "id, name";
 
-    public static void getGenres(final Context context){
+    public static void getGenres(Context context) {
         APIWrapper wrapper = new APIWrapper(context, API_KEY);
 
         Parameters params = new Parameters();
@@ -44,7 +41,9 @@ public class APIUtil {
                 Gson gson = new Gson();
                 Genre[] genres = gson.fromJson(jsonArray.toString(), Genre[].class);
                 //Insert DB
-                Genre.insertAll(context, genres);
+                AppDatabase db = AppDatabase.getAppDatabase(context);
+                GenreRepository genreRepository = new GenreRepository(db.genreDao());
+                genreRepository.insertAll(genres);
             }
 
             @Override
@@ -54,8 +53,7 @@ public class APIUtil {
         });
     }
 
-    public static void getPlatforms(final Context context){
-        List<Platform> platforms = new ArrayList<Platform>();
+    public static void getPlatforms(Context context) {
         APIWrapper wrapper = new APIWrapper(context, API_KEY);
 
         Parameters params = new Parameters();
@@ -67,34 +65,37 @@ public class APIUtil {
             public void onSuccess(JSONArray jsonArray) {
                 Gson gson = new Gson();
                 Platform[] platforms = gson.fromJson(jsonArray.toString(), Platform[].class);
-                Platform.insertAll(context, platforms);
+                //Insert DB
+                PlatformRepository platformRepository = new PlatformRepository();
+                platformRepository.insertAll(context, platforms);
             }
 
             @Override
             public void onError(VolleyError volleyError) {
-
+                Log.e("PLATFORMS ERROR:", volleyError.toString());
             }
         });
     }
 
-    public static List<Game> getGames(Context context, String title, String genre, int rangeLower, int rangeUpper, String platform, String esrb){
+    /*
+    public static List<Game> getGames(Context context, String title, String genre, int rangeLower, int rangeUpper, String platform, String esrb) {
         APIWrapper wrapper = new APIWrapper(context, API_KEY);
         Parameters params = new Parameters();
         params.addFields(GAME_FIELDS);
 
-        if(!StringUtils.isBlank(title)){
+        if (!StringUtils.isBlank(title)) {
             //params.addFilter();
         }
-        if(!StringUtils.isBlank(platform)){
+        if (!StringUtils.isBlank(platform)) {
             int platform_id = 0;
             params.addFilter("[platforms][eq]=" + platform_id);
         }
-        if(!StringUtils.isBlank(esrb)){
+        if (!StringUtils.isBlank(esrb)) {
             int esrb_id = 0;
             params.addFilter("[esrb][eq]=" + esrb_id);
         }
 
-        wrapper.games(params, new onSuccessCallback(){
+        wrapper.games(params, new onSuccessCallback() {
             @Override
             public void onSuccess(JSONArray result) {
                 Log.e("RESPONSE: ", result.toString());
@@ -109,5 +110,5 @@ public class APIUtil {
 
         return null;
     }
-
+    */
 }
