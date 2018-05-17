@@ -14,8 +14,8 @@ public class GenreRepository extends BaseRepository {
 
     private final GenreDao genreDao;
 
-    public GenreRepository(GenreDao genreDao) {
-        this.genreDao = genreDao;
+    public GenreRepository() {
+        this.genreDao = AppDatabase.getAppDatabase().genreDao();
     }
 
     //Database Methods

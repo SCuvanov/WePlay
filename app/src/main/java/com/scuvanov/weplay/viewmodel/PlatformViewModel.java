@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel;
 
 import com.scuvanov.weplay.entity.Platform;
 import com.scuvanov.weplay.repository.PlatformRepository;
+import com.scuvanov.weplay.repository.RepositoryFactory;
 
 import java.util.List;
 
@@ -12,8 +13,8 @@ public class PlatformViewModel extends ViewModel {
 
     private PlatformRepository platformRepository;
 
-    public PlatformViewModel(PlatformRepository platformRepository) {
-        this.platformRepository = platformRepository;
+    public PlatformViewModel() {
+        this.platformRepository = RepositoryFactory.getPlatformRepository();
     }
 
     public void insertAll(Platform... platforms) {

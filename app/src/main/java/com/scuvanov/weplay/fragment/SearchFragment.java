@@ -1,15 +1,14 @@
 package com.scuvanov.weplay.fragment;
 
-import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,18 +20,11 @@ import android.widget.Spinner;
 import com.appyvet.materialrangebar.RangeBar;
 import com.marcoscg.dialogsheet.DialogSheet;
 import com.scuvanov.weplay.R;
-import com.scuvanov.weplay.database.AppDatabase;
 import com.scuvanov.weplay.entity.Esrb;
 import com.scuvanov.weplay.entity.Genre;
 import com.scuvanov.weplay.entity.Platform;
 import com.scuvanov.weplay.fragment.dummy.DummyContent;
 import com.scuvanov.weplay.fragment.dummy.DummyContent.DummyItem;
-import com.scuvanov.weplay.repository.EsrbRepository;
-import com.scuvanov.weplay.repository.GenreRepository;
-import com.scuvanov.weplay.repository.PlatformRepository;
-import com.scuvanov.weplay.repository.RepositoryFactory;
-import com.scuvanov.weplay.repository.RepositoryFactory.RepositoryType;
-import com.scuvanov.weplay.util.APIUtil;
 import com.scuvanov.weplay.viewmodel.EsrbViewModel;
 import com.scuvanov.weplay.viewmodel.GenreViewModel;
 import com.scuvanov.weplay.viewmodel.PlatformViewModel;
@@ -68,6 +60,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private List<String> esrbList = new ArrayList<String>();
     private Map<String, Integer> esrbMap = new HashMap<String, Integer>();
 
+    ViewModelProvider.Factory viewModelFactory;
 
 
     /**
@@ -119,11 +112,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         spGenreAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, genreList);
         spGenreAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        GenreViewModel genreViewModel = new GenreViewModel(RepositoryFactory.getGenreRepository(getActivity()));
+        GenreViewModel genreViewModel = ViewModelProviders.of(this, viewModelFactory).get(GenreViewModel.class);
         genreViewModel.getAll().observe(this, genres -> { //new Observer<List<Genre>>()
             genreList.clear();
 
-            for(Genre g : genres) {
+            for (Genre g : genres) {
                 genreList.add(g.getName());
                 genreMap.put(g.getName(), g.getId());
             }
@@ -133,11 +126,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         spPlatformAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, platformList);
         spPlatformAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        PlatformViewModel platformViewModel =  new PlatformViewModel(RepositoryFactory.getPlatformRepository(getActivity()));
+        PlatformViewModel platformViewModel = ViewModelProviders.of(this, viewModelFactory).get(PlatformViewModel.class);
         platformViewModel.getAll().observe(this, platforms -> {
             platformList.clear();
 
-            for(Platform p : platforms) {
+            for (Platform p : platforms) {
                 platformList.add(p.getName());
                 platformMap.put(p.getName(), p.getId());
             }
@@ -147,11 +140,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         spESRBAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, esrbList);
         spESRBAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        EsrbViewModel esrbViewModel = new EsrbViewModel(RepositoryFactory.getEsrbRepository(getActivity()));
+        EsrbViewModel esrbViewModel = ViewModelProviders.of(this, viewModelFactory).get(EsrbViewModel.class);
         esrbViewModel.getAll().observe(this, esrbs -> {
             esrbList.clear();
 
-            for(Esrb e : esrbs) {
+            for (Esrb e : esrbs) {
                 esrbList.add(e.getName());
                 esrbMap.put(e.getName(), e.getId());
             }

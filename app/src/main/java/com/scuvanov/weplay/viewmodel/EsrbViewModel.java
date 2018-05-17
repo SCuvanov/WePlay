@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel;
 
 import com.scuvanov.weplay.entity.Esrb;
 import com.scuvanov.weplay.repository.EsrbRepository;
+import com.scuvanov.weplay.repository.RepositoryFactory;
 
 import java.util.List;
 
@@ -12,8 +13,8 @@ public class EsrbViewModel extends ViewModel {
 
     private EsrbRepository esrbRepository;
 
-    public EsrbViewModel(EsrbRepository esrbRepository) {
-        this.esrbRepository = esrbRepository;
+    public EsrbViewModel() {
+        this.esrbRepository = RepositoryFactory.getEsrbRepository();
     }
 
     public void insertAll(Esrb... esrbs) {

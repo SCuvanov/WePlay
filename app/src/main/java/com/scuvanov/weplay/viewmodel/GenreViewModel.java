@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel;
 
 import com.scuvanov.weplay.entity.Genre;
 import com.scuvanov.weplay.repository.GenreRepository;
+import com.scuvanov.weplay.repository.RepositoryFactory;
 
 import java.util.List;
 
@@ -12,8 +13,8 @@ public class GenreViewModel extends ViewModel {
 
     private GenreRepository genreRepository;
 
-    public GenreViewModel(GenreRepository genreRepository) {
-        this.genreRepository = genreRepository;
+    public GenreViewModel() {
+        this.genreRepository = RepositoryFactory.getGenreRepository();
     }
 
     public void insertAll(Genre... genres){

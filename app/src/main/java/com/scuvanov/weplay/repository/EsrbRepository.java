@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import com.scuvanov.weplay.dao.EsrbDao;
+import com.scuvanov.weplay.database.AppDatabase;
 import com.scuvanov.weplay.entity.Esrb;
 
 import java.util.List;
@@ -12,8 +13,8 @@ public class EsrbRepository extends BaseRepository {
 
     private final EsrbDao esrbDao;
 
-    public EsrbRepository(EsrbDao esrbDao) {
-        this.esrbDao = esrbDao;
+    public EsrbRepository() {
+        this.esrbDao = AppDatabase.getAppDatabase().esrbDao();
     }
 
     //Database Methods

@@ -5,6 +5,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import com.scuvanov.weplay.application.WePlayApplication;
 import com.scuvanov.weplay.dao.EsrbDao;
 import com.scuvanov.weplay.dao.GenreDao;
 import com.scuvanov.weplay.dao.PlatformDao;
@@ -22,9 +23,9 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract PlatformDao platformDao();
     public abstract EsrbDao esrbDao();
 
-    public static AppDatabase getAppDatabase(Context context) {
+    public static AppDatabase getAppDatabase() {
         if (INSTANCE == null) {
-            INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+            INSTANCE = Room.databaseBuilder(WePlayApplication.getContext(),
                     AppDatabase.class, DB_NAME).build();
         }
         return INSTANCE;

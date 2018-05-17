@@ -34,7 +34,6 @@ public class APIUtil {
     public static final String API_KEY = "df0301913ee9372f9f61519e91fabe4c";
     private static final String GENRE_FIELDS = "id, name";
     private static final String PLATFORM_FIELDS = "id, name";
-    private static final String ESRB_FIELDS = "id, name";
     private static final String GAME_FIELDS = "id, name, url, hypes, rating, rating_count";
 
     public static void getGenres(Context context) {
@@ -50,7 +49,7 @@ public class APIUtil {
                 Gson gson = new Gson();
                 Genre[] genres = gson.fromJson(jsonArray.toString(), Genre[].class);
                 //Insert DB
-                GenreRepository genreRepository = RepositoryFactory.getGenreRepository(context);
+                GenreRepository genreRepository = RepositoryFactory.getGenreRepository();
                 genreRepository.insertAll(genres);
             }
 
@@ -73,7 +72,7 @@ public class APIUtil {
             public void onSuccess(JSONArray jsonArray) {
                 Gson gson = new Gson();
                 Platform[] platforms = gson.fromJson(jsonArray.toString(), Platform[].class);
-                PlatformRepository platformRepository = RepositoryFactory.getPlatformRepository(context);
+                PlatformRepository platformRepository = RepositoryFactory.getPlatformRepository();
                 platformRepository.insertAll(platforms);
             }
 
@@ -94,7 +93,7 @@ public class APIUtil {
             esrbs[i] = esrb;
         }
 
-        EsrbRepository esrbRepository = RepositoryFactory.getEsrbRepository(context);
+        EsrbRepository esrbRepository = RepositoryFactory.getEsrbRepository();
         esrbRepository.insertAll(esrbs);
     }
 
