@@ -18,7 +18,9 @@ public class WePlayApplication extends Application {
         //TODO: Perhaps verify if values exist in DB, if they do.. don't make another call.
         //Retrieve values from IGDB API
         APIUtil.getGenres(getApplicationContext());
-        APIUtil.getPlatforms(getApplicationContext());
+        APIUtil.getPlatforms(getApplicationContext(), null);
+        APIUtil.getPlatforms(getApplicationContext(), "50");
+        APIUtil.getPlatforms(getApplicationContext(), "100");
         APIUtil.getEsrbs(getApplicationContext());
     }
 

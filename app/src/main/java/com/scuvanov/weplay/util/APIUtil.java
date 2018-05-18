@@ -60,12 +60,13 @@ public class APIUtil {
         });
     }
 
-    public static void getPlatforms(Context context) {
+    public static void getPlatforms(Context context, String offset) {
         APIWrapper wrapper = new APIWrapper(context, API_KEY);
 
         Parameters params = new Parameters();
         params.addFields(PLATFORM_FIELDS);
         params.addLimit("50");
+        if(!StringUtils.isBlank(offset)) params.addOffset(offset);
 
         wrapper.platforms(params, new onSuccessCallback() {
             @Override
