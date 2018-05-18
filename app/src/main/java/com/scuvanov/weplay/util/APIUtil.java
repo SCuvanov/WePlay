@@ -134,6 +134,7 @@ public class APIUtil {
             }
         });
 
+        Log.e(APIUtil.class.getCanonicalName(), gamesList.toString());
         return ((gamesList == null || gamesList.isEmpty()) ? null : gamesList);
     }
 }

@@ -15,6 +15,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) new PlatformViewModel();
         else if (modelClass.isAssignableFrom(EsrbViewModel.class))
             return (T) new EsrbViewModel();
+        else if (modelClass.isAssignableFrom(GameViewModel.class))
+            return (T) new GameViewModel();
         else {
             throw new IllegalArgumentException("ViewModel Not Found");
         }
