@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.scuvanov.weplay.R;
 import com.scuvanov.weplay.dummy.DummyContent;
+import com.scuvanov.weplay.entity.Game;
 import com.scuvanov.weplay.fragment.CollectionsFragment;
 import com.scuvanov.weplay.fragment.FeedFragment;
 import com.scuvanov.weplay.fragment.SearchFragment;
@@ -74,6 +75,11 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
 
     @Override
     public void onListFragmentInteraction(DummyContent.DummyItem item) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(Game game) {
 
     }
 

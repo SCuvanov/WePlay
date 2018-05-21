@@ -9,6 +9,9 @@ public class WePlayApplication extends Application {
 
     private static Context mContext;
 
+    private static final String FIRST_OFFSET = "50";
+    private static final String SECOND_OFFSET = "100";
+
 
     @Override
     public void onCreate() {
@@ -19,8 +22,8 @@ public class WePlayApplication extends Application {
         //Retrieve values from IGDB API
         APIUtil.getGenres(getApplicationContext());
         APIUtil.getPlatforms(getApplicationContext(), null);
-        APIUtil.getPlatforms(getApplicationContext(), "50");
-        APIUtil.getPlatforms(getApplicationContext(), "100");
+        APIUtil.getPlatforms(getApplicationContext(), FIRST_OFFSET);
+        APIUtil.getPlatforms(getApplicationContext(), SECOND_OFFSET);
         APIUtil.getEsrbs(getApplicationContext());
     }
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.scuvanov.weplay.R;
+import com.scuvanov.weplay.entity.Game;
 import com.scuvanov.weplay.fragment.SearchFragment.OnListFragmentInteractionListener;
 import com.scuvanov.weplay.fragment.dummy.DummyContent.DummyItem;
 
@@ -19,11 +20,11 @@ import java.util.List;
  */
 public class MySearchRecyclerViewAdapter extends RecyclerView.Adapter<MySearchRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<Game> mGames;
     private final OnListFragmentInteractionListener mListener;
 
-    public MySearchRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
+    public MySearchRecyclerViewAdapter(List<Game> games, OnListFragmentInteractionListener listener) {
+        mGames = games;
         mListener = listener;
     }
 
@@ -36,9 +37,9 @@ public class MySearchRecyclerViewAdapter extends RecyclerView.Adapter<MySearchRe
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mGame = mGames.get(position);
+        //holder.mIdView.setText(mGames.get(position).id);
+        //holder.mContentView.setText(mValues.get(position).content);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +47,7 @@ public class MySearchRecyclerViewAdapter extends RecyclerView.Adapter<MySearchRe
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(holder.mGame);
                 }
             }
         });
@@ -54,14 +55,14 @@ public class MySearchRecyclerViewAdapter extends RecyclerView.Adapter<MySearchRe
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mGames.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public Game mGame;
 
         public ViewHolder(View view) {
             super(view);

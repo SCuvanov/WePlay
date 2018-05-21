@@ -20,6 +20,10 @@ import android.widget.Spinner;
 import com.appyvet.materialrangebar.RangeBar;
 import com.marcoscg.dialogsheet.DialogSheet;
 import com.scuvanov.weplay.R;
+import com.scuvanov.weplay.entity.Esrb;
+import com.scuvanov.weplay.entity.Game;
+import com.scuvanov.weplay.entity.Genre;
+import com.scuvanov.weplay.entity.Platform;
 import com.scuvanov.weplay.fragment.dummy.DummyContent;
 import com.scuvanov.weplay.fragment.dummy.DummyContent.DummyItem;
 import com.scuvanov.weplay.viewmodel.EsrbViewModel;
@@ -40,11 +44,9 @@ import java.util.Map;
  */
 public class SearchFragment extends Fragment implements View.OnClickListener {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 2;
     private OnListFragmentInteractionListener mListener;
+    private MySearchRecyclerViewAdapter mySearchRecyclerViewAdapter;
+
 
     private final String TAG = SearchFragment.class.getCanonicalName();
     private final String SEARCH_AND_FILTERS = "Search & Filters";
@@ -57,6 +59,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private Map<String, Integer> platformMap = new HashMap<String, Integer>();
     private List<String> esrbList = new ArrayList<String>();
     private Map<String, Integer> esrbMap = new HashMap<String, Integer>();
+    private List<Game> gameList = new ArrayList<Game>();
 
     private ViewModelProvider.Factory viewModelFactory;
     private GenreViewModel genreViewModel;
@@ -75,20 +78,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static SearchFragment newInstance(int columnCount) {
-        SearchFragment fragment = new SearchFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
+        return new SearchFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
@@ -96,16 +91,15 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_list, container, false);
 
-        // Set the adapter
+        Context context = view.getContext();
+        RecyclerView recyclerView = (RecyclerView) view;
+
+        //TODO: The layout is not an instance of a recycler view.. new to figure out what is up with this.
         if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new MySearchRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+            mySearchRecyclerViewAdapter = new MySearchRecyclerViewAdapter(gameList, mListener);
+            recyclerView.setAdapter(mySearchRecyclerViewAdapter);
         }
 
         fabSearch = view.findViewById(R.id.fabSearch);
@@ -117,6 +111,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         genreViewModel = ViewModelProviders.of(this, viewModelFactory).get(GenreViewModel.class);
         genreViewModel.getAll().observe(this, genres -> { //new Observer<List<Genre>>()
             genreList.clear();
+            for(Genre g : genres){
+                genreList.add(g.getName());
+            }
             spGenreAdapter.notifyDataSetChanged();
         });
 
@@ -126,6 +123,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         platformViewModel = ViewModelProviders.of(this, viewModelFactory).get(PlatformViewModel.class);
         platformViewModel.getAll().observe(this, platforms -> {
             platformList.clear();
+            for(Platform p : platforms){
+                platformList.add(p.getName());
+            }
             spPlatformAdapter.notifyDataSetChanged();
         });
 
@@ -135,10 +135,15 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         esrbViewModel = ViewModelProviders.of(this, viewModelFactory).get(EsrbViewModel.class);
         esrbViewModel.getAll().observe(this, esrbs -> {
             esrbList.clear();
+            for(Esrb e : esrbs){
+                esrbList.add(e.getName());
+            }
             spESRBAdapter.notifyDataSetChanged();
         });
 
         gameViewModel = ViewModelProviders.of(this, viewModelFactory).get(GameViewModel.class);
+        gameList = gameViewModel.getGames(null, null, null, null, null, null);
+        mySearchRecyclerViewAdapter.notifyDataSetChanged();
 
         return view;
     }
@@ -218,9 +223,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             String platform = spPlatform.getSelectedItem().toString();
             String esrb = spESRB.getSelectedItem().toString();
 
-
-
-
+            gameViewModel.getGames(title, genre, platform, esrb, null,null);
+            mySearchRecyclerViewAdapter.notifyDataSetChanged();
         });
         dialogSheet.setNegativeButton(android.R.string.cancel, v -> {
             // Your action
@@ -252,6 +256,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Game game);
     }
 }

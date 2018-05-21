@@ -14,6 +14,8 @@ import com.scuvanov.weplay.repository.PlatformRepository;
 import com.scuvanov.weplay.repository.RepositoryFactory;
 import com.scuvanov.weplay.util.APIUtil;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,17 +34,26 @@ public class GameViewModel extends ViewModel {
     }
 
     public List<Game> getGames(String title, String genre, String platform, String esrb, Integer rangeLower, Integer rangeUpper) {
-        LiveData<Genre> genreLiveData = genreRepository.findByName(genre);
-        LiveData<Platform> platformLiveData = platformRepository.findByName(platform);
-        LiveData<Esrb> esrbLiveData = esrbRepository.findByName(esrb);
+        LiveData<Genre> genreLiveData = null;
+        LiveData<Platform> platformLiveData = null;
+        LiveData<Esrb> esrbLiveData = null;
 
-        //TODO: This may cause null pointer exception
-        Integer genreId = genreLiveData.getValue().getId();
-        Integer platformId = platformLiveData.getValue().getId();
-        Integer esrbId = esrbLiveData.getValue().getId();
+        if(!StringUtils.isBlank(genre)) genreLiveData = genreRepository.findByName(genre);
+        if(!StringUtils.isBlank(platform)) platformLiveData = platformRepository.findByName(platform);
+        if(!StringUtils.isBlank(esrb)) esrbLiveData = esrbRepository.findByName(esrb);
 
-        APIUtil.getGames(WePlayApplication.getContext(), title, genreId, platformId, esrbId, rangeLower, rangeUpper);
-        return null;
+        Integer genreId = null;
+        Integer platformId = null;
+        Integer esrbId = null;
+
+        if(genreLiveData != null) genreId = genreLiveData.getValue().getId();
+        if(platformLiveData != null) platformId = platformLiveData.getValue().getId();
+        if(esrbLiveData != null) esrbId = esrbLiveData.getValue().getId();
+
+        List<Game> tempGames = APIUtil.getGames(WePlayApplication.getContext(), title, genreId, platformId, esrbId, rangeLower, rangeUpper);
+        if(tempGames != null && !tempGames.isEmpty())
+            gameList = tempGames;
+        return gameList;
     }
 
 
