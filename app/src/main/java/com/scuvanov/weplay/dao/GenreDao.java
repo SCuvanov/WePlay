@@ -21,7 +21,7 @@ public interface GenreDao {
     LiveData<List<Genre>> loadAllByIds(int[] genreIds);
 
     @Query("SELECT * FROM Genre WHERE name LIKE :name LIMIT 1")
-    LiveData<Genre> findByName(String name);
+    Genre findByName(String name);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE) //If there is a conflict, replace the record.
     void insertAll(Genre... genres);

@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private Map<String, Integer> platformMap = new HashMap<String, Integer>();
     private List<String> esrbList = new ArrayList<String>();
     private Map<String, Integer> esrbMap = new HashMap<String, Integer>();
-    private List<Game> gameList = new ArrayList<Game>();
+    private List<Game> gamesList = new ArrayList<Game>();
 
     private ViewModelProvider.Factory viewModelFactory;
     private GenreViewModel genreViewModel;
@@ -92,15 +93,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_search_list, container, false);
 
         Context context = view.getContext();
-        RecyclerView recyclerView = (RecyclerView) view;
+        RecyclerView recyclerView = view.findViewById(R.id.list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        //TODO: The layout is not an instance of a recycler view.. new to figure out what is up with this.
-        if (view instanceof RecyclerView) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-
-            mySearchRecyclerViewAdapter = new MySearchRecyclerViewAdapter(gameList, mListener);
-            recyclerView.setAdapter(mySearchRecyclerViewAdapter);
-        }
+        mySearchRecyclerViewAdapter = new MySearchRecyclerViewAdapter(gamesList, mListener);
+        recyclerView.setAdapter(mySearchRecyclerViewAdapter);
 
         fabSearch = view.findViewById(R.id.fabSearch);
         fabSearch.setOnClickListener(this);
@@ -142,8 +139,16 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         });
 
         gameViewModel = ViewModelProviders.of(this, viewModelFactory).get(GameViewModel.class);
-        gameList = gameViewModel.getGames(null, null, null, null, null, null);
-        mySearchRecyclerViewAdapter.notifyDataSetChanged();
+        gameViewModel.getGames(null, null, null, null, null, null, new GameViewModel.GameCallback() {
+            @Override
+            public void onSuccess(List<Game> games) {
+                if(games != null && !games.isEmpty()) {
+                    gamesList = games;
+                    Log.e("SEARCH DIALOG", gamesList.toString());
+                    mySearchRecyclerViewAdapter.notifyDataSetChanged();
+                }
+            }
+        });
 
         return view;
     }
@@ -215,16 +220,22 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         Button btnESRBFilter = inflatedView.findViewById(R.id.btnESRBFilter);
         btnESRBFilter.setOnClickListener(view -> hideAndShowViews(spESRB, dialogViews));
 
-
-        //TODO: This may not work.
         dialogSheet.setPositiveButton(android.R.string.ok, v -> { //new DialogSheet.OnPositiveClickListener()
             String title = etTitle.getText().toString();
             String genre = spGenre.getSelectedItem().toString();
             String platform = spPlatform.getSelectedItem().toString();
             String esrb = spESRB.getSelectedItem().toString();
 
-            gameViewModel.getGames(title, genre, platform, esrb, null,null);
-            mySearchRecyclerViewAdapter.notifyDataSetChanged();
+            gameViewModel.getGames(title, genre, platform, esrb, null, null, new GameViewModel.GameCallback() {
+                @Override
+                public void onSuccess(List<Game> games) {
+                    if(games != null && !games.isEmpty()) {
+                        gamesList = games;
+                        Log.e(TAG, gamesList.toString());
+                        mySearchRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
         });
         dialogSheet.setNegativeButton(android.R.string.cancel, v -> {
             // Your action

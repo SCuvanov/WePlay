@@ -21,7 +21,7 @@ public interface EsrbDao {
     LiveData<List<Esrb>> loadAllByIds(int[] esrbIds);
 
     @Query("SELECT * FROM Esrb WHERE name LIKE :name LIMIT 1")
-    LiveData<Esrb> findByName(String name);
+    Esrb findByName(String name);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Esrb... esrbs);

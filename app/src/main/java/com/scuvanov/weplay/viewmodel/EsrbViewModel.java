@@ -29,7 +29,7 @@ public class EsrbViewModel extends ViewModel {
         return esrbRepository.getAll();
     }
 
-    public LiveData<Esrb> findByName(String name) {
+    public Esrb findByName(String name) {
         return esrbRepository.findByName(name);
     }
 

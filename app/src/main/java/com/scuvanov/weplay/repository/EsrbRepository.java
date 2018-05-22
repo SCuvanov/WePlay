@@ -34,7 +34,7 @@ public class EsrbRepository extends BaseRepository {
         return esrbDao.getAll();
     }
 
-    public LiveData<Esrb> findByName(String name) {
+    public Esrb findByName(String name) {
         return esrbDao.findByName(name);
     }
 

@@ -2,6 +2,8 @@ package com.scuvanov.weplay.viewmodel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import com.scuvanov.weplay.application.WePlayApplication;
 import com.scuvanov.weplay.entity.Esrb;
@@ -19,49 +21,75 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.android.volley.VolleyLog.TAG;
+
 public class GameViewModel extends ViewModel {
 
-    private GenreRepository genreRepository;
-    private PlatformRepository platformRepository;
-    private EsrbRepository esrbRepository;
+    private List<Game> gamesList = new ArrayList<Game>();
 
-    private List<Game> gameList = new ArrayList<Game>();
+    public GameViewModel() {}
 
-    public GameViewModel() {
-        this.genreRepository = RepositoryFactory.getGenreRepository();
-        this.platformRepository = RepositoryFactory.getPlatformRepository();
-        this.esrbRepository = RepositoryFactory.getEsrbRepository();
+    public void getGames(String title, String genre, String platform, String esrb, Integer rangeLower, Integer rangeUpper, GameCallback gameCallback) {
+        new GetGamesTask(title, genre, platform, esrb, rangeLower, rangeUpper).execute(gameCallback);
     }
 
-    public List<Game> getGames(String title, String genre, String platform, String esrb, Integer rangeLower, Integer rangeUpper) {
-        LiveData<Genre> genreLiveData = null;
-        LiveData<Platform> platformLiveData = null;
-        LiveData<Esrb> esrbLiveData = null;
+    public List<Game> getGamesList() {
+        return gamesList;
+    }
 
-        if(!StringUtils.isBlank(genre)) genreLiveData = genreRepository.findByName(genre);
-        if(!StringUtils.isBlank(platform)) platformLiveData = platformRepository.findByName(platform);
-        if(!StringUtils.isBlank(esrb)) esrbLiveData = esrbRepository.findByName(esrb);
+    public void setGamesList(List<Game> gamesList) {
+        this.gamesList = gamesList;
+    }
 
-        Integer genreId = null;
-        Integer platformId = null;
-        Integer esrbId = null;
+    public interface GameCallback {
+        void onSuccess(List<Game> games);
+    }
 
-        if(genreLiveData != null) genreId = genreLiveData.getValue().getId();
-        if(platformLiveData != null) platformId = platformLiveData.getValue().getId();
-        if(esrbLiveData != null) esrbId = esrbLiveData.getValue().getId();
+    private class GetGamesTask extends AsyncTask<GameCallback, Void, Void> {
+        private GenreRepository genreRepository;
+        private PlatformRepository platformRepository;
+        private EsrbRepository esrbRepository;
 
-        List<Game> tempGames = APIUtil.getGames(WePlayApplication.getContext(), title, genreId, platformId, esrbId, rangeLower, rangeUpper);
-        if(tempGames != null && !tempGames.isEmpty())
-            gameList = tempGames;
-        return gameList;
+        private String title, genreName, platformName, esrbName;
+        private Integer rangeLower, rangeUpper;
+
+        public GetGamesTask(String title, String genreName, String platformName, String esrbName, Integer rangeLower, Integer rangeUpper) {
+            this.title = title;
+            this.genreName = genreName;
+            this.platformName = platformName;
+            this.esrbName = esrbName;
+            this.rangeLower = rangeLower;
+            this.rangeUpper = rangeUpper;
+
+            this.genreRepository = RepositoryFactory.getGenreRepository();
+            this.platformRepository = RepositoryFactory.getPlatformRepository();
+            this.esrbRepository = RepositoryFactory.getEsrbRepository();
+        }
+
+
+        @Override
+        protected Void doInBackground(GameCallback... gameCallbacks) {
+            Genre genreData = genreRepository.findByName(genreName);
+            Platform platformData = platformRepository.findByName(platformName);
+            Esrb esrbData = esrbRepository.findByName(esrbName);
+
+            Integer genreId = null;
+            Integer platformId = null;
+            Integer esrbId = null;
+
+            if(genreData != null) genreId = genreData.getId();
+            if(platformData != null) platformId = platformData.getId();
+            if(esrbData != null) esrbId = esrbData.getId();
+
+            APIUtil.getGames(WePlayApplication.getContext(), title, genreId, platformId, esrbId, rangeLower, rangeUpper, games -> {
+                gamesList = games;
+                Log.e("DO IN BACKGROUND", gamesList.toString());
+                gameCallbacks[0].onSuccess(games);
+            });
+
+            return null;
+        }
     }
 
 
-    public List<Game> getGameList() {
-        return gameList;
-    }
-
-    public void setGameList(List<Game> gameList) {
-        this.gameList = gameList;
-    }
 }

@@ -18,6 +18,7 @@ import com.scuvanov.weplay.repository.GenreRepository;
 import com.scuvanov.weplay.repository.PlatformRepository;
 import com.scuvanov.weplay.repository.RepositoryFactory;
 import com.scuvanov.weplay.repository.RepositoryFactory.RepositoryType;
+import com.scuvanov.weplay.viewmodel.GameViewModel;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
@@ -25,6 +26,8 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.android.volley.VolleyLog.TAG;
 
 /**
  * Created by Sean on 3/7/2018.
@@ -98,7 +101,7 @@ public class APIUtil {
         esrbRepository.insertAll(esrbs);
     }
 
-    public static List<Game> getGames(Context context, String title, Integer genreId, Integer platformId, Integer esrbId, Integer rangeLower, Integer rangeUpper) {
+    public static void getGames(Context context, String title, Integer genreId, Integer platformId, Integer esrbId, Integer rangeLower, Integer rangeUpper, GameViewModel.GameCallback gameCallback) {
         List<Game> gamesList = new ArrayList<Game>();
         APIWrapper wrapper = new APIWrapper(context, API_KEY);
 
@@ -123,18 +126,15 @@ public class APIUtil {
             public void onSuccess(JSONArray jsonArray) {
                 Gson gson = new Gson();
                 Game[] games = gson.fromJson(jsonArray.toString(), Game[].class);
-
                 gamesList.addAll(Arrays.asList(games));
+                Log.e("API UTIL", gamesList.toString());
+                gameCallback.onSuccess(gamesList);
             }
 
             @Override
             public void onError(VolleyError error) {
-                // Do something on error
                 Log.e("GAMES ERROR: ", error.toString());
             }
         });
-
-        Log.e(APIUtil.class.getCanonicalName(), gamesList.toString());
-        return ((gamesList == null || gamesList.isEmpty()) ? null : gamesList);
     }
 }

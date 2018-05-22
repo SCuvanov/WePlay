@@ -29,7 +29,7 @@ public class PlatformViewModel extends ViewModel {
         return platformRepository.getAll();
     }
 
-    public LiveData<Platform> findByName(String name) {
+    public Platform findByName(String name) {
         return platformRepository.findByName(name);
     }
 

@@ -21,7 +21,7 @@ public interface PlatformDao {
     LiveData<List<Platform>> loadAllByIds(int[] platformIds);
 
     @Query("SELECT * FROM Platform WHERE name LIKE :name LIMIT 1")
-    LiveData<Platform> findByName(String name);
+    Platform findByName(String name);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE) //If there is a conflict, replace the record.
     void insertAll(Platform... platforms);

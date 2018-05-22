@@ -35,7 +35,7 @@ public class GenreRepository extends BaseRepository {
         return genreDao.getAll();
     }
 
-    public LiveData<Genre> findByName(String name) {
+    public Genre findByName(String name) {
         return genreDao.findByName(name);
     }
 

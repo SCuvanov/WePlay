@@ -29,7 +29,7 @@ public class GenreViewModel extends ViewModel {
         return genreRepository.getAll();
     }
 
-    public LiveData<Genre> findByName(String name) {
+    public Genre findByName(String name) {
         return genreRepository.findByName(name);
     }
 

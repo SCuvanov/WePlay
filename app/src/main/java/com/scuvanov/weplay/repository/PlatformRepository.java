@@ -34,7 +34,7 @@ public class PlatformRepository extends BaseRepository {
         return platformDao.getAll();
     }
 
-    public LiveData<Platform> findByName(String name) {
+    public Platform findByName(String name) {
         return platformDao.findByName(name);
     }
 
