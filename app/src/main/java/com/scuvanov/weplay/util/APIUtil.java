@@ -101,24 +101,15 @@ public class APIUtil {
         esrbRepository.insertAll(esrbs);
     }
 
-    public static void getGames(Context context, String title, Integer genreId, Integer platformId, Integer esrbId, Integer rangeLower, Integer rangeUpper, GameViewModel.GameCallback gameCallback) {
+    public static void getGames(Context context, String title, GameViewModel.GameCallback gameCallback) {
         List<Game> gamesList = new ArrayList<Game>();
         APIWrapper wrapper = new APIWrapper(context, API_KEY);
 
         Parameters params = new Parameters();
         params.addFields(GAME_FIELDS);
 
-        if (!StringUtils.isBlank(title)) {
+        if (!StringUtils.isBlank(title)) { //Independent value;
             params.addSearch(title);
-        }
-        if (genreId != null) {
-            params.addFilter("[genres][eq]=" + genreId);
-        }
-        if (platformId != null) {
-            params.addFilter("[platforms][eq]=" + platformId);
-        }
-        if (esrbId != null) {
-            params.addFilter("[esrb][eq]=" + esrbId);
         }
 
         wrapper.games(params, new onSuccessCallback() {
@@ -127,7 +118,6 @@ public class APIUtil {
                 Gson gson = new Gson();
                 Game[] games = gson.fromJson(jsonArray.toString(), Game[].class);
                 gamesList.addAll(Arrays.asList(games));
-                Log.e("API UTIL", gamesList.toString());
                 gameCallback.onSuccess(gamesList);
             }
 

@@ -29,8 +29,8 @@ public class GameViewModel extends ViewModel {
 
     public GameViewModel() {}
 
-    public void getGames(String title, String genre, String platform, String esrb, Integer rangeLower, Integer rangeUpper, GameCallback gameCallback) {
-        new GetGamesTask(title, genre, platform, esrb, rangeLower, rangeUpper).execute(gameCallback);
+    public void getGames(String title, GameCallback gameCallback) {
+        new GetGamesTask(title).execute(gameCallback);
     }
 
     public List<Game> getGamesList() {
@@ -46,44 +46,17 @@ public class GameViewModel extends ViewModel {
     }
 
     private class GetGamesTask extends AsyncTask<GameCallback, Void, Void> {
-        private GenreRepository genreRepository;
-        private PlatformRepository platformRepository;
-        private EsrbRepository esrbRepository;
 
-        private String title, genreName, platformName, esrbName;
-        private Integer rangeLower, rangeUpper;
+        private String title;
 
-        public GetGamesTask(String title, String genreName, String platformName, String esrbName, Integer rangeLower, Integer rangeUpper) {
+        public GetGamesTask(String title) {
             this.title = title;
-            this.genreName = genreName;
-            this.platformName = platformName;
-            this.esrbName = esrbName;
-            this.rangeLower = rangeLower;
-            this.rangeUpper = rangeUpper;
-
-            this.genreRepository = RepositoryFactory.getGenreRepository();
-            this.platformRepository = RepositoryFactory.getPlatformRepository();
-            this.esrbRepository = RepositoryFactory.getEsrbRepository();
         }
-
 
         @Override
         protected Void doInBackground(GameCallback... gameCallbacks) {
-            Genre genreData = genreRepository.findByName(genreName);
-            Platform platformData = platformRepository.findByName(platformName);
-            Esrb esrbData = esrbRepository.findByName(esrbName);
-
-            Integer genreId = null;
-            Integer platformId = null;
-            Integer esrbId = null;
-
-            if(genreData != null) genreId = genreData.getId();
-            if(platformData != null) platformId = platformData.getId();
-            if(esrbData != null) esrbId = esrbData.getId();
-
-            APIUtil.getGames(WePlayApplication.getContext(), title, genreId, platformId, esrbId, rangeLower, rangeUpper, games -> {
+            APIUtil.getGames(WePlayApplication.getContext(), title, games -> {
                 gamesList = games;
-                Log.e("DO IN BACKGROUND", gamesList.toString());
                 gameCallbacks[0].onSuccess(games);
             });
 

@@ -1,6 +1,7 @@
 package com.scuvanov.weplay.fragment;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,15 +10,9 @@ import android.widget.TextView;
 import com.scuvanov.weplay.R;
 import com.scuvanov.weplay.entity.Game;
 import com.scuvanov.weplay.fragment.SearchFragment.OnListFragmentInteractionListener;
-import com.scuvanov.weplay.fragment.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MySearchRecyclerViewAdapter extends RecyclerView.Adapter<MySearchRecyclerViewAdapter.ViewHolder> {
 
     private final List<Game> mGames;
@@ -25,6 +20,7 @@ public class MySearchRecyclerViewAdapter extends RecyclerView.Adapter<MySearchRe
 
     public MySearchRecyclerViewAdapter(List<Game> games, OnListFragmentInteractionListener listener) {
         mGames = games;
+        Log.e("ADAPTER", mGames.toString());
         mListener = listener;
     }
 
@@ -38,17 +34,13 @@ public class MySearchRecyclerViewAdapter extends RecyclerView.Adapter<MySearchRe
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mGame = mGames.get(position);
-        //holder.mIdView.setText(mGames.get(position).id);
-        //holder.mContentView.setText(mValues.get(position).content);
+        holder.mIdView.setText(mGames.get(position).getName());
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mGame);
-                }
+        holder.mView.setOnClickListener(v -> {
+            if (null != mListener) {
+                // Notify the active callbacks interface (the activity, if the
+                // fragment is attached to one) that an item has been selected.
+                mListener.onListFragmentInteraction(holder.mGame);
             }
         });
     }
@@ -61,19 +53,17 @@ public class MySearchRecyclerViewAdapter extends RecyclerView.Adapter<MySearchRe
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
-        public final TextView mContentView;
         public Game mGame;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = view.findViewById(R.id.id);
-            mContentView = view.findViewById(R.id.content);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString();
         }
     }
 }
