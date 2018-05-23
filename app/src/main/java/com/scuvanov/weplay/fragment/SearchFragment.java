@@ -87,8 +87,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         gameViewModel = ViewModelProviders.of(this, viewModelFactory).get(GameViewModel.class);
         gameViewModel.getGames(null, games -> {
             if(games != null && !games.isEmpty()) {
-                gamesList = games;
-                Log.e(TAG, gamesList.toString());
+                gamesList.clear();
+                gamesList.addAll(games);
                 mySearchRecyclerViewAdapter.notifyDataSetChanged();
             }
         });
@@ -135,21 +135,19 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
             gameViewModel.getGames(title, games -> {
                 if(games != null && !games.isEmpty()) {
-                    gamesList = games;
+                    gamesList.clear();
+                    gamesList.addAll(games);
                     mySearchRecyclerViewAdapter.notifyDataSetChanged();
                 }
             });
         });
-        dialogSheet.setNegativeButton(android.R.string.cancel, v -> {
-            // Your action
-        });
+        dialogSheet.setNegativeButton(android.R.string.cancel, v -> { });
         dialogSheet.setButtonsColorRes(R.color.colorPrimaryDark);
         dialogSheet.setTitle(SEARCH_AND_FILTERS);
         dialogSheet.show();
     }
 
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(Game game);
     }
 }

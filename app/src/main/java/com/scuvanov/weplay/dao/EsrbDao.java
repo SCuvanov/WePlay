@@ -14,14 +14,20 @@ import java.util.List;
 @Dao
 public interface EsrbDao {
 
-    @Query("SELECT * FROM Esrb")
+    @Query("SELECT * FROM Esrb ORDER BY name ASC")
     LiveData<List<Esrb>> getAll();
 
+    @Query("SELECT * FROM Esrb ORDER BY name ASC")
+    List<Esrb> getAllAsList();
+
     @Query("SELECT * FROM Esrb WHERE id IN (:esrbIds)")
-    LiveData<List<Esrb>> loadAllByIds(int[] esrbIds);
+    List<Esrb> loadAllByIds(int[] esrbIds);
 
     @Query("SELECT * FROM Esrb WHERE name LIKE :name LIMIT 1")
     Esrb findByName(String name);
+
+    @Query("SELECT * FROM Esrb WHERE id IN (:id) LIMIT 1")
+    Esrb findById(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Esrb... esrbs);

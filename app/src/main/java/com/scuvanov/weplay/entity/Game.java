@@ -1,10 +1,13 @@
 package com.scuvanov.weplay.entity;
 
+import java.util.List;
+
 public class Game {
 
     int id, created_at, updated_at, rating_count, hypes;
     int[] platforms, genres;
-    String name, slug, url;
+    List<String> genreNames, platformNames;
+    String name, slug, url, esrbName;
     double rating;
 
     public int getId() {
@@ -93,5 +96,29 @@ public class Game {
 
     public void setGenres(int[] genres) {
         this.genres = genres;
+    }
+
+    public List<String> getGenreNames() {
+        return genreNames;
+    }
+
+    public void setGenreNames(List<String> genreNames) {
+        this.genreNames = genreNames;
+    }
+
+    public List<String> getPlatformNames() {
+        return platformNames;
+    }
+
+    public void setPlatformNames(List<String> platformNames) {
+        this.platformNames = platformNames;
+    }
+
+    public String getEsrbName() {
+        return esrbName;
+    }
+
+    public void setEsrbName(String esrbName) {
+        this.esrbName = esrbName;
     }
 }

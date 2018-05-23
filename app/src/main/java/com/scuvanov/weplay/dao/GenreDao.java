@@ -17,11 +17,17 @@ public interface GenreDao {
     @Query("SELECT * FROM Genre ORDER BY name ASC")
     LiveData<List<Genre>> getAll();
 
+    @Query("SELECT * FROM Genre ORDER BY name ASC")
+    List<Genre> getAllAsList();
+
     @Query("SELECT * FROM Genre WHERE id IN (:genreIds)")
-    LiveData<List<Genre>> loadAllByIds(int[] genreIds);
+    List<Genre> loadAllByIds(int[] genreIds);
 
     @Query("SELECT * FROM Genre WHERE name LIKE :name LIMIT 1")
     Genre findByName(String name);
+
+    @Query("SELECT * FROM Genre WHERE id IN (:id) LIMIT 1")
+    Genre findById(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE) //If there is a conflict, replace the record.
     void insertAll(Genre... genres);

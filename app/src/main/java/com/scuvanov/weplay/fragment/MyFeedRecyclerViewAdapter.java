@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.scuvanov.weplay.R;
+import com.scuvanov.weplay.entity.GameCollection;
 import com.scuvanov.weplay.fragment.FeedFragment.OnListFragmentInteractionListener;
 import com.scuvanov.weplay.fragment.dummy.DummyContent.DummyItem;
 
@@ -19,11 +20,11 @@ import java.util.List;
  */
 public class MyFeedRecyclerViewAdapter extends RecyclerView.Adapter<MyFeedRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<GameCollection> mGameCollections;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyFeedRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
+    public MyFeedRecyclerViewAdapter(List<GameCollection> gameCollections, OnListFragmentInteractionListener listener) {
+        mGameCollections = gameCollections;
         mListener = listener;
     }
 
@@ -36,9 +37,8 @@ public class MyFeedRecyclerViewAdapter extends RecyclerView.Adapter<MyFeedRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.gameCollection = mGameCollections.get(position);
+        holder.mIdView.setText(mGameCollections.get(position).getId());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +46,7 @@ public class MyFeedRecyclerViewAdapter extends RecyclerView.Adapter<MyFeedRecycl
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(holder.gameCollection);
                 }
             }
         });
@@ -54,25 +54,23 @@ public class MyFeedRecyclerViewAdapter extends RecyclerView.Adapter<MyFeedRecycl
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mGameCollections.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        public GameCollection gameCollection;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = view.findViewById(R.id.id);
-            mContentView = view.findViewById(R.id.content);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString();
         }
     }
 }

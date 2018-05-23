@@ -17,11 +17,17 @@ public interface PlatformDao {
     @Query("SELECT * FROM Platform ORDER BY name ASC")
     LiveData<List<Platform>> getAll();
 
+    @Query("SELECT * FROM Platform ORDER BY name ASC")
+    List<Platform> getAllAsList();
+
     @Query("SELECT * FROM Platform WHERE id IN (:platformIds)")
-    LiveData<List<Platform>> loadAllByIds(int[] platformIds);
+    List<Platform> loadAllByIds(int[] platformIds);
 
     @Query("SELECT * FROM Platform WHERE name LIKE :name LIMIT 1")
     Platform findByName(String name);
+
+    @Query("SELECT * FROM Platform WHERE id IN (:id) LIMIT 1")
+    Platform findById(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE) //If there is a conflict, replace the record.
     void insertAll(Platform... platforms);

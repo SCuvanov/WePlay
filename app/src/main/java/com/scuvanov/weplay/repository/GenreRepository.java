@@ -1,14 +1,17 @@
 package com.scuvanov.weplay.repository;
 
 import android.arch.lifecycle.LiveData;
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.scuvanov.weplay.dao.GenreDao;
 import com.scuvanov.weplay.database.AppDatabase;
 import com.scuvanov.weplay.entity.Genre;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GenreRepository extends BaseRepository {
 
@@ -35,8 +38,32 @@ public class GenreRepository extends BaseRepository {
         return genreDao.getAll();
     }
 
+    public Map<Integer, Genre> getAllAsMap() {
+        Map<Integer, Genre> genreMap = new HashMap<Integer, Genre>();
+        for (Genre g : genreDao.getAllAsList()) {
+            genreMap.put(g.getId(), g);
+        }
+        return genreMap;
+    }
+
+    public List<String> getAllGenreNames(int[] genreIds) {
+        List<String> genreNames = new ArrayList<String>();
+        for(Genre g: genreDao.loadAllByIds(genreIds)) {
+            genreNames.add(g.getName());
+        }
+        return genreNames;
+    }
+
+    public List<Genre> loadAllByIds(int[] genreIds) {
+        return genreDao.loadAllByIds(genreIds);
+    }
+
     public Genre findByName(String name) {
         return genreDao.findByName(name);
+    }
+
+    public Genre findById(int id) {
+        return genreDao.findById(id);
     }
 
     public void delete(Genre genre) {

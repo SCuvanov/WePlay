@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import com.scuvanov.weplay.R;
 import com.scuvanov.weplay.dummy.DummyContent;
 import com.scuvanov.weplay.entity.Game;
+import com.scuvanov.weplay.entity.GameCollection;
 import com.scuvanov.weplay.fragment.CollectionsFragment;
 import com.scuvanov.weplay.fragment.FeedFragment;
 import com.scuvanov.weplay.fragment.SearchFragment;
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
     }
 
     @Override
-    public void onListFragmentInteraction(com.scuvanov.weplay.fragment.dummy.DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(GameCollection item) {
 
     }
 }

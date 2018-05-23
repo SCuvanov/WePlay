@@ -6,6 +6,8 @@ import com.scuvanov.weplay.database.AppDatabase;
 
 public class RepositoryFactory {
 
+    //TODO: Make this a singleton, the repositories should be singletons?
+
     public enum RepositoryType {
         GENRE,
         PLATFORM,
