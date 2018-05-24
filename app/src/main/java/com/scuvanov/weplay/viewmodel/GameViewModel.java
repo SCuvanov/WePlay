@@ -20,14 +20,12 @@ public class GameViewModel extends ViewModel {
     public GameViewModel() {
     }
 
+    public void getGames() {
+        getGames(null, null);
+    }
+
     public void getGames(String title, GameCallback gameCallback) {
         new GetGamesTask(title).execute(gameCallback);
-        /*
-        APIUtil.getGames(WePlayApplication.getContext(), title, games -> {
-            gamesList = games;
-            if(gameCallback != null) gameCallback.onSuccess(games);
-        });
-        */
     }
 
     public List<Game> getGamesList() {
@@ -43,6 +41,8 @@ public class GameViewModel extends ViewModel {
 
     public interface GameCallback {
         void onSuccess(List<Game> games);
+
+        void onError(String message);
     }
 
     private class GetGamesTask extends AsyncTask<GameCallback, Void, Void> {
@@ -63,15 +63,30 @@ public class GameViewModel extends ViewModel {
 
         @Override
         protected Void doInBackground(GameCallback... gameCallbacks) {
-            APIUtil.getGames(WePlayApplication.getContext(), title, games -> {
+            APIUtil.getGames(WePlayApplication.getContext(), title, new GameCallback() {
+                @Override
+                public void onSuccess(List<Game> games) {
+                    if (games == null || !games.isEmpty()) {
+                        for (Game game : games) {
+                            game.setGenreNames(genreRepository.getAllGenreNames(game.getGenres()));
+                            game.setPlatformNames(platformRepository.getAllPlatformNames(game.getPlatforms()));
+                        }
 
-                for (Game game : games) {
-                    game.setGenreNames(genreRepository.getAllGenreNames(game.getGenres()));
-                    game.setPlatformNames(platformRepository.getAllPlatformNames(game.getPlatforms()));
+                        if (games != null && !games.isEmpty()) {
+                            gamesList.clear();
+                            gamesList.addAll(games);
+                        }
+
+                        if (gameCallbacks != null && gameCallbacks.length > 0) {
+                            gameCallbacks[0].onSuccess(gamesList);
+                        }
+                    }
                 }
 
-                gamesList = games;
-                gameCallbacks[0].onSuccess(games);
+                @Override
+                public void onError(String message) {
+                    gameCallbacks[0].onError(message);
+                }
             });
 
             return null;

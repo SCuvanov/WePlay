@@ -78,18 +78,24 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         RecyclerView recyclerView = view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        mySearchRecyclerViewAdapter = new MySearchRecyclerViewAdapter(gamesList, mListener);
+        gameViewModel = ViewModelProviders.of(this, viewModelFactory).get(GameViewModel.class);
+
+        mySearchRecyclerViewAdapter = new MySearchRecyclerViewAdapter(gameViewModel.getGamesList(), mListener);
         recyclerView.setAdapter(mySearchRecyclerViewAdapter);
 
         fabSearch = view.findViewById(R.id.fabSearch);
         fabSearch.setOnClickListener(this);
 
-        gameViewModel = ViewModelProviders.of(this, viewModelFactory).get(GameViewModel.class);
-        gameViewModel.getGames(null, games -> {
-            if(games != null && !games.isEmpty()) {
-                gamesList.clear();
-                gamesList.addAll(games);
+
+        gameViewModel.getGames(null, new GameViewModel.GameCallback() {
+            @Override
+            public void onSuccess(List<Game> games) {
                 mySearchRecyclerViewAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(String message) {
+                Log.e(TAG, message);
             }
         });
 
@@ -133,11 +139,19 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         dialogSheet.setPositiveButton(android.R.string.ok, v -> { //new DialogSheet.OnPositiveClickListener()
             String title = etTitle.getText().toString();
 
-            gameViewModel.getGames(title, games -> {
-                if(games != null && !games.isEmpty()) {
-                    gamesList.clear();
-                    gamesList.addAll(games);
-                    mySearchRecyclerViewAdapter.notifyDataSetChanged();
+            gameViewModel.getGames(title, new GameViewModel.GameCallback() {
+                @Override
+                public void onSuccess(List<Game> games) {
+                    if(games != null && !games.isEmpty()) {
+                        //gamesList.clear();
+                        //gamesList.addAll(games);
+                        mySearchRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onError(String message) {
+
                 }
             });
         });

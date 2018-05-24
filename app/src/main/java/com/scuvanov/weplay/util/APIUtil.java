@@ -123,7 +123,8 @@ public class APIUtil {
 
             @Override
             public void onError(VolleyError error) {
-                Log.e("GAMES ERROR: ", error.toString());
+                Log.e(TAG, error.getMessage());
+                gameCallback.onError(error.getMessage());
             }
         });
     }
