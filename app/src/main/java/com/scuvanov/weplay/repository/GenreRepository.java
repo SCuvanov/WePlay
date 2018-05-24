@@ -47,6 +47,7 @@ public class GenreRepository extends BaseRepository {
     }
 
     public List<String> getAllGenreNames(int[] genreIds) {
+        if(genreIds == null) return null;
         List<String> genreNames = new ArrayList<String>();
         for(Genre g: genreDao.loadAllByIds(genreIds)) {
             genreNames.add(g.getName());

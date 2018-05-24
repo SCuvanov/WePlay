@@ -1,9 +1,11 @@
 package com.scuvanov.weplay.fragment;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -57,6 +59,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
     private ViewModelProvider.Factory viewModelFactory;
     private GameViewModel gameViewModel;
+    private Map<Integer, String> genreNameMap = new HashMap<>();
+    private Map<Integer, String> platformNameMap = new HashMap<>();
 
     public SearchFragment() {}
 
@@ -80,12 +84,29 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
         gameViewModel = ViewModelProviders.of(this, viewModelFactory).get(GameViewModel.class);
 
+        gameViewModel.getObservableGenres().observe(this, new Observer<List<Genre>>() {
+            @Override
+            public void onChanged(@Nullable List<Genre> genres) {
+                for(Genre g : genres){
+                    genreNameMap.put(g.getId(), g.getName());
+                }
+            }
+        });
+
+        gameViewModel.getObservablePlatforms().observe(this, new Observer<List<Platform>>() {
+            @Override
+            public void onChanged(@Nullable List<Platform> platforms) {
+                for(Platform p : platforms){
+                    platformNameMap.put(p.getId(), p.getName());
+                }
+            }
+        });
+
         mySearchRecyclerViewAdapter = new MySearchRecyclerViewAdapter(gameViewModel.getGamesList(), mListener);
         recyclerView.setAdapter(mySearchRecyclerViewAdapter);
 
         fabSearch = view.findViewById(R.id.fabSearch);
         fabSearch.setOnClickListener(this);
-
 
         gameViewModel.getGames(null, new GameViewModel.GameCallback() {
             @Override

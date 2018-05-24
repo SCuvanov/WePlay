@@ -47,6 +47,7 @@ public class PlatformRepository extends BaseRepository {
     }
 
     public List<String> getAllPlatformNames(int[] platformIds) {
+        if(platformIds == null) return null;
         List<String> platformNames = new ArrayList<String>();
         for(Platform p: platformDao.loadAllByIds(platformIds)) {
             platformNames.add(p.getName());
