@@ -1,14 +1,26 @@
 package com.scuvanov.weplay.entity;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import java.util.List;
 
+@Entity(indices = {@Index(value = {"id"}, unique = true)})
 public class Game {
 
-    int id, created_at, updated_at, rating_count, hypes;
-    int[] platforms, genres;
-    List<String> genreNames, platformNames;
-    String name, slug, url, esrbName;
-    double rating;
+    @PrimaryKey
+    @NonNull
+    private int id;
+    private int created_at, updated_at, rating_count;
+    private int[] platforms, genres, developers;
+    private String name, slug, url, esrbName;
+    private double rating;
+    private Cover cover;
+    private Esrb esrb;
+    private Screenshot[] screenshots;
 
     public int getId() {
         return id;
@@ -74,14 +86,6 @@ public class Game {
         this.rating = rating;
     }
 
-    public int getHypes() {
-        return hypes;
-    }
-
-    public void setHypes(int hypes) {
-        this.hypes = hypes;
-    }
-
     public int[] getPlatforms() {
         return platforms;
     }
@@ -120,5 +124,37 @@ public class Game {
 
     public void setEsrbName(String esrbName) {
         this.esrbName = esrbName;
+    }
+
+    public Cover getCover() {
+        return cover;
+    }
+
+    public void setCover(Cover cover) {
+        this.cover = cover;
+    }
+
+    public Esrb getEsrb() {
+        return esrb;
+    }
+
+    public void setEsrb(Esrb esrb) {
+        this.esrb = esrb;
+    }
+
+    public Screenshot[] getScreenshots() {
+        return screenshots;
+    }
+
+    public void setScreenshots(Screenshot[] screenshots) {
+        this.screenshots = screenshots;
+    }
+
+    public int[] getDevelopers() {
+        return developers;
+    }
+
+    public void setDevelopers(int[] developers) {
+        this.developers = developers;
     }
 }

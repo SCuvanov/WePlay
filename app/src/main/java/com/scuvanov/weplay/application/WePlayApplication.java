@@ -21,10 +21,12 @@ public class WePlayApplication extends Application {
         //TODO: Perhaps verify if values exist in DB, if they do.. don't make another call.
         //Retrieve values from IGDB API
         APIUtil.getGenres(getApplicationContext());
+        APIUtil.getEsrbs(getApplicationContext());
+        APIUtil.getGames(WePlayApplication.getContext());
         APIUtil.getPlatforms(getApplicationContext(), null);
         APIUtil.getPlatforms(getApplicationContext(), FIRST_OFFSET);
         APIUtil.getPlatforms(getApplicationContext(), SECOND_OFFSET);
-        APIUtil.getEsrbs(getApplicationContext());
+
     }
 
     public static Context getContext() {

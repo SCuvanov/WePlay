@@ -27,4 +27,8 @@ public class RepositoryFactory {
     public static EsrbRepository getEsrbRepository(){
         return new EsrbRepository();
     }
+
+    public static GameRepository getGameRepository(){
+        return new GameRepository();
+    }
 }

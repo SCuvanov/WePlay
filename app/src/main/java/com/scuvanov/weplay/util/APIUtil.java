@@ -9,11 +9,13 @@ import com.igdb.api_android_java.callback.onSuccessCallback;
 import com.igdb.api_android_java.model.APIWrapper;
 import com.igdb.api_android_java.model.Parameters;
 import com.scuvanov.weplay.database.AppDatabase;
+import com.scuvanov.weplay.entity.Company;
 import com.scuvanov.weplay.entity.Esrb;
 import com.scuvanov.weplay.entity.Game;
 import com.scuvanov.weplay.entity.Genre;
 import com.scuvanov.weplay.entity.Platform;
 import com.scuvanov.weplay.repository.EsrbRepository;
+import com.scuvanov.weplay.repository.GameRepository;
 import com.scuvanov.weplay.repository.GenreRepository;
 import com.scuvanov.weplay.repository.PlatformRepository;
 import com.scuvanov.weplay.repository.RepositoryFactory;
@@ -37,7 +39,7 @@ public class APIUtil {
     public static final String API_KEY = "df0301913ee9372f9f61519e91fabe4c";
     private static final String GENRE_FIELDS = "id, name";
     private static final String PLATFORM_FIELDS = "id, name";
-    private static final String GAME_FIELDS = "id, name, url, hypes, rating, rating_count";
+    private static final String GAME_FIELDS = "id, name, url, rating, rating_count, summary, genres, platforms, cover, esrb, developers, screenshots";
 
     public static void getGenres(Context context) {
         APIWrapper wrapper = new APIWrapper(context, API_KEY);
@@ -101,6 +103,28 @@ public class APIUtil {
         esrbRepository.insertAll(esrbs);
     }
 
+    public static void getGames(Context context){
+        APIWrapper wrapper = new APIWrapper(context, API_KEY);
+
+        Parameters params = new Parameters();
+        params.addFields(GAME_FIELDS);
+
+        wrapper.games(params, new onSuccessCallback() {
+            @Override
+            public void onSuccess(JSONArray jsonArray) {
+                Gson gson = new Gson();
+                Game[] games = gson.fromJson(jsonArray.toString(), Game[].class);
+                GameRepository gameRepository = RepositoryFactory.getGameRepository();
+                gameRepository.insertAll(games);
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                Log.e(TAG, error.getMessage());
+            }
+        });
+    }
+
     public static void getGames(Context context, String title, GameViewModel.GameCallback gameCallback) {
         List<Game> gamesList = new ArrayList<Game>();
         APIWrapper wrapper = new APIWrapper(context, API_KEY);
@@ -108,7 +132,7 @@ public class APIUtil {
         Parameters params = new Parameters();
         params.addFields(GAME_FIELDS);
 
-        if (!StringUtils.isBlank(title)) { //Independent value;
+        if (!StringUtils.isBlank(title)) {
             params.addSearch(title);
         }
 
@@ -125,6 +149,32 @@ public class APIUtil {
             public void onError(VolleyError error) {
                 Log.e(TAG, error.getMessage());
                 gameCallback.onError(error.getMessage());
+            }
+        });
+    }
+
+
+    public static void getCompanies(Context context, int[] ids){
+        if(ids == null || ids.length <= 0) return;
+        APIWrapper wrapper = new APIWrapper(context, API_KEY);
+
+        Parameters params = new Parameters();
+        String result = Arrays.toString(ids).replaceAll("\\[|\\]", "");
+
+        params.addFields(result);
+        params.addFields("name");
+
+        wrapper.search(APIWrapper.Endpoint.COMPANIES, params, new onSuccessCallback(){
+            @Override
+            public void onSuccess(JSONArray jsonArray) {
+                Gson gson = new Gson();
+                Company[] companies = gson.fromJson(jsonArray.toString(), Company[].class);
+                //TODO: Do something with these
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                // Do something on error
             }
         });
     }

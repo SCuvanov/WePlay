@@ -12,6 +12,7 @@ public class Esrb {
     @NonNull
     private int id;
     private String name;
+    private int rating;
 
     public Esrb(@NonNull int id, String name) {
         this.id = id;
@@ -32,5 +33,13 @@ public class Esrb {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 }
