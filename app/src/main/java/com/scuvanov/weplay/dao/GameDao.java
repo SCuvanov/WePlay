@@ -14,8 +14,11 @@ import java.util.List;
 @Dao
 public interface GameDao {
 
-    @Query("SELECT * FROM Game ORDER BY name ASC")
+    @Query("SELECT * FROM Game ORDER BY name DESC")
     LiveData<List<Game>> getAll();
+
+    @Query("SELECT * FROM Game ORDER BY name DESC")
+    List<Game> getAllList();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Game... game);
@@ -25,4 +28,7 @@ public interface GameDao {
 
     @Delete
     void delete(Game game);
+
+    @Query("DELETE FROM Game")
+    void deleteAll();
 }

@@ -84,39 +84,18 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
         gameViewModel = ViewModelProviders.of(this, viewModelFactory).get(GameViewModel.class);
 
-        gameViewModel.getObservableGenres().observe(this, new Observer<List<Genre>>() {
-            @Override
-            public void onChanged(@Nullable List<Genre> genres) {
-                for(Genre g : genres){
-                    genreNameMap.put(g.getId(), g.getName());
-                }
-            }
-        });
-
-        gameViewModel.getObservablePlatforms().observe(this, new Observer<List<Platform>>() {
-            @Override
-            public void onChanged(@Nullable List<Platform> platforms) {
-                for(Platform p : platforms){
-                    platformNameMap.put(p.getId(), p.getName());
-                }
-            }
-        });
-
-        mySearchRecyclerViewAdapter = new MySearchRecyclerViewAdapter(gameViewModel.getGamesList(), mListener);
+        mySearchRecyclerViewAdapter = new MySearchRecyclerViewAdapter(gamesList, mListener);
         recyclerView.setAdapter(mySearchRecyclerViewAdapter);
 
         fabSearch = view.findViewById(R.id.fabSearch);
         fabSearch.setOnClickListener(this);
 
-        gameViewModel.getGames(null, new GameViewModel.GameCallback() {
+        gameViewModel.getObservableGames().observe(this, new Observer<List<Game>>() {
             @Override
-            public void onSuccess(List<Game> games) {
+            public void onChanged(@Nullable List<Game> games) {
+                gamesList.clear();
+                gamesList.addAll(games);
                 mySearchRecyclerViewAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onError(String message) {
-                Log.e(TAG, message);
             }
         });
 
@@ -159,22 +138,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
         dialogSheet.setPositiveButton(android.R.string.ok, v -> { //new DialogSheet.OnPositiveClickListener()
             String title = etTitle.getText().toString();
-
-            gameViewModel.getGames(title, new GameViewModel.GameCallback() {
-                @Override
-                public void onSuccess(List<Game> games) {
-                    if(games != null && !games.isEmpty()) {
-                        //gamesList.clear();
-                        //gamesList.addAll(games);
-                        mySearchRecyclerViewAdapter.notifyDataSetChanged();
-                    }
-                }
-
-                @Override
-                public void onError(String message) {
-
-                }
-            });
+            gameViewModel.getGames(title);
         });
         dialogSheet.setNegativeButton(android.R.string.cancel, v -> { });
         dialogSheet.setButtonsColorRes(R.color.colorPrimaryDark);

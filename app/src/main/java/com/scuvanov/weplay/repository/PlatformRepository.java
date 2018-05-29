@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 
 import com.scuvanov.weplay.dao.PlatformDao;
 import com.scuvanov.weplay.database.AppDatabase;
-import com.scuvanov.weplay.entity.Genre;
 import com.scuvanov.weplay.entity.Platform;
 
 import java.util.ArrayList;
@@ -47,10 +46,24 @@ public class PlatformRepository extends BaseRepository {
     }
 
     public List<String> getAllPlatformNames(int[] platformIds) {
-        if(platformIds == null) return null;
+        if (platformIds == null) return null;
         List<String> platformNames = new ArrayList<String>();
-        for(Platform p: platformDao.loadAllByIds(platformIds)) {
+        for (Platform p : platformDao.loadAllByIds(platformIds)) {
             platformNames.add(p.getName());
+        }
+        return platformNames;
+    }
+
+    public String getPlatformNamesAsString(int[] platformIds) {
+        if (platformIds == null) return null;
+        String platformNames = "";
+        List<Platform> platforms = platformDao.loadAllByIds(platformIds);
+        for (Platform p : platforms) {
+            if (platforms.size() == 1)
+                platformNames = platformNames.concat(p.getName());
+            else
+                platformNames = platformNames.concat(p.getName() + ", ");
+
         }
         return platformNames;
     }

@@ -55,6 +55,19 @@ public class GenreRepository extends BaseRepository {
         return genreNames;
     }
 
+    public String getGenreNamesAsString(int[] genreIds) {
+        if(genreIds == null) return null;
+        String genreNames = "";
+        List<Genre> genres = genreDao.loadAllByIds(genreIds);
+        for(Genre g : genres) {
+            if(genres.size() == 1)
+                genreNames = genreNames.concat(g.getName());
+            else
+                genreNames = genreNames.concat(g.getName() + ", ");
+        }
+        return genreNames;
+    }
+
     public List<Genre> loadAllByIds(int[] genreIds) {
         return genreDao.loadAllByIds(genreIds);
     }

@@ -35,8 +35,8 @@ public class MySearchRecyclerViewAdapter extends RecyclerView.Adapter<MySearchRe
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mGame = mGames.get(position);
         holder.mTvTitle.setText(mGames.get(position).getName());
-        holder.mTvRating.setText(String.valueOf(mGames.get(position).getRating()));
-        holder.mTvHype.setText(String.valueOf(mGames.get(position).getDevelopers()));
+        holder.mTvRating.setText(String.valueOf(mGames.get(position).getRating()) + " / 100");
+        holder.mTvPlatforms.setText(String.valueOf(mGames.get(position).getPlatformNames()));
 
 
         holder.mView.setOnClickListener(v -> {
@@ -57,7 +57,7 @@ public class MySearchRecyclerViewAdapter extends RecyclerView.Adapter<MySearchRe
         public final View mView;
         public final TextView mTvTitle;
         public final TextView mTvRating;
-        public final TextView mTvHype;
+        public final TextView mTvPlatforms;
         public Game mGame;
 
         public ViewHolder(View view) {
@@ -65,7 +65,7 @@ public class MySearchRecyclerViewAdapter extends RecyclerView.Adapter<MySearchRe
             mView = view;
             mTvTitle = view.findViewById(R.id.tvTitle);
             mTvRating = view.findViewById(R.id.tvRating);
-            mTvHype = view.findViewById(R.id.tvHype);
+            mTvPlatforms = view.findViewById(R.id.tvPlatforms);
         }
 
         @Override

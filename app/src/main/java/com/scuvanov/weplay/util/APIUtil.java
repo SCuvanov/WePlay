@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import com.igdb.api_android_java.callback.onSuccessCallback;
 import com.igdb.api_android_java.model.APIWrapper;
 import com.igdb.api_android_java.model.Parameters;
-import com.scuvanov.weplay.database.AppDatabase;
+import com.scuvanov.weplay.application.WePlayApplication;
 import com.scuvanov.weplay.entity.Company;
 import com.scuvanov.weplay.entity.Esrb;
 import com.scuvanov.weplay.entity.Game;
@@ -19,15 +19,11 @@ import com.scuvanov.weplay.repository.GameRepository;
 import com.scuvanov.weplay.repository.GenreRepository;
 import com.scuvanov.weplay.repository.PlatformRepository;
 import com.scuvanov.weplay.repository.RepositoryFactory;
-import com.scuvanov.weplay.repository.RepositoryFactory.RepositoryType;
-import com.scuvanov.weplay.viewmodel.GameViewModel;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static com.android.volley.VolleyLog.TAG;
 
@@ -71,7 +67,7 @@ public class APIUtil {
         Parameters params = new Parameters();
         params.addFields(PLATFORM_FIELDS);
         params.addLimit("50");
-        if(!StringUtils.isBlank(offset)) params.addOffset(offset);
+        if (!StringUtils.isBlank(offset)) params.addOffset(offset);
 
         wrapper.platforms(params, new onSuccessCallback() {
             @Override
@@ -89,12 +85,12 @@ public class APIUtil {
         });
     }
 
-    public static void getEsrbs(Context context){
+    public static void getEsrbs(Context context) {
         int[] ids = new int[]{1, 2, 3, 4, 5, 6, 7};
         String[] values = new String[]{"RP", "EC", "E", "E10+", "T", "M", "AO"};
         Esrb[] esrbs = new Esrb[7];
 
-        for(int i = 0; i < ids.length; i++){
+        for (int i = 0; i < ids.length; i++) {
             Esrb esrb = new Esrb(ids[i], values[i]);
             esrbs[i] = esrb;
         }
@@ -103,11 +99,15 @@ public class APIUtil {
         esrbRepository.insertAll(esrbs);
     }
 
-    public static void getGames(Context context){
-        APIWrapper wrapper = new APIWrapper(context, API_KEY);
+    public static void getGames(String title) {
+        APIWrapper wrapper = new APIWrapper(WePlayApplication.getContext(), API_KEY);
 
         Parameters params = new Parameters();
         params.addFields(GAME_FIELDS);
+
+        if (!StringUtils.isBlank(title)) {
+            params.addSearch(title);
+        }
 
         wrapper.games(params, new onSuccessCallback() {
             @Override
@@ -115,7 +115,7 @@ public class APIUtil {
                 Gson gson = new Gson();
                 Game[] games = gson.fromJson(jsonArray.toString(), Game[].class);
                 GameRepository gameRepository = RepositoryFactory.getGameRepository();
-                gameRepository.insertAll(games);
+                gameRepository.deleteAndInsertAll(games);
             }
 
             @Override
@@ -125,6 +125,7 @@ public class APIUtil {
         });
     }
 
+    /*
     public static void getGames(Context context, String title, GameViewModel.GameCallback gameCallback) {
         List<Game> gamesList = new ArrayList<Game>();
         APIWrapper wrapper = new APIWrapper(context, API_KEY);
@@ -152,10 +153,11 @@ public class APIUtil {
             }
         });
     }
+    */
 
 
-    public static void getCompanies(Context context, int[] ids){
-        if(ids == null || ids.length <= 0) return;
+    public static void getCompanies(Context context, int[] ids) {
+        if (ids == null || ids.length <= 0) return;
         APIWrapper wrapper = new APIWrapper(context, API_KEY);
 
         Parameters params = new Parameters();
@@ -164,7 +166,7 @@ public class APIUtil {
         params.addFields(result);
         params.addFields("name");
 
-        wrapper.search(APIWrapper.Endpoint.COMPANIES, params, new onSuccessCallback(){
+        wrapper.search(APIWrapper.Endpoint.COMPANIES, params, new onSuccessCallback() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
                 Gson gson = new Gson();
