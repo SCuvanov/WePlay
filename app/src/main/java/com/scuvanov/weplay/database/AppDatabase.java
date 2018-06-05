@@ -3,22 +3,20 @@ package com.scuvanov.weplay.database;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.TypeConverters;
 
 import com.scuvanov.weplay.application.WePlayApplication;
-import com.scuvanov.weplay.converter.CoverTypeConverter;
-import com.scuvanov.weplay.converter.IntArrayTypeConverter;
-import com.scuvanov.weplay.converter.ScreenshotTypeConverter;
+import com.scuvanov.weplay.dao.CompanyDao;
 import com.scuvanov.weplay.dao.EsrbDao;
 import com.scuvanov.weplay.dao.GameDao;
 import com.scuvanov.weplay.dao.GenreDao;
 import com.scuvanov.weplay.dao.PlatformDao;
+import com.scuvanov.weplay.entity.Company;
 import com.scuvanov.weplay.entity.Esrb;
 import com.scuvanov.weplay.entity.Game;
 import com.scuvanov.weplay.entity.Genre;
 import com.scuvanov.weplay.entity.Platform;
 
-@Database(entities = {Genre.class, Platform.class, Esrb.class, Game.class}, version = 1, exportSchema = false)
+@Database(entities = {Genre.class, Platform.class, Esrb.class, Game.class, Company.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;
@@ -31,6 +29,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract EsrbDao esrbDao();
 
     public abstract GameDao gameDao();
+
+    public abstract CompanyDao companyDao();
 
     public static AppDatabase getAppDatabase() {
         if (INSTANCE == null) {

@@ -14,6 +14,7 @@ import com.scuvanov.weplay.entity.Esrb;
 import com.scuvanov.weplay.entity.Game;
 import com.scuvanov.weplay.entity.Genre;
 import com.scuvanov.weplay.entity.Platform;
+import com.scuvanov.weplay.repository.CompanyRepository;
 import com.scuvanov.weplay.repository.EsrbRepository;
 import com.scuvanov.weplay.repository.GameRepository;
 import com.scuvanov.weplay.repository.GenreRepository;
@@ -49,14 +50,13 @@ public class APIUtil {
             public void onSuccess(JSONArray jsonArray) {
                 Gson gson = new Gson();
                 Genre[] genres = gson.fromJson(jsonArray.toString(), Genre[].class);
-                //Insert DB
                 GenreRepository genreRepository = RepositoryFactory.getGenreRepository();
                 genreRepository.insertAll(genres);
             }
 
             @Override
             public void onError(VolleyError volleyError) {
-                Log.e("GENRES ERROR:", volleyError.toString());
+                Log.e(TAG, volleyError.getMessage());
             }
         });
     }
@@ -80,7 +80,7 @@ public class APIUtil {
 
             @Override
             public void onError(VolleyError volleyError) {
-                Log.e("PLATFORMS ERROR:", volleyError.toString());
+                Log.e(TAG, volleyError.getMessage());
             }
         });
     }
@@ -119,46 +119,16 @@ public class APIUtil {
             }
 
             @Override
-            public void onError(VolleyError error) {
-                Log.e(TAG, error.getMessage());
+            public void onError(VolleyError volleyError) {
+                Log.e(TAG, volleyError.getMessage());
             }
         });
     }
 
-    /*
-    public static void getGames(Context context, String title, GameViewModel.GameCallback gameCallback) {
-        List<Game> gamesList = new ArrayList<Game>();
-        APIWrapper wrapper = new APIWrapper(context, API_KEY);
 
-        Parameters params = new Parameters();
-        params.addFields(GAME_FIELDS);
-
-        if (!StringUtils.isBlank(title)) {
-            params.addSearch(title);
-        }
-
-        wrapper.games(params, new onSuccessCallback() {
-            @Override
-            public void onSuccess(JSONArray jsonArray) {
-                Gson gson = new Gson();
-                Game[] games = gson.fromJson(jsonArray.toString(), Game[].class);
-                gamesList.addAll(Arrays.asList(games));
-                gameCallback.onSuccess(gamesList);
-            }
-
-            @Override
-            public void onError(VolleyError error) {
-                Log.e(TAG, error.getMessage());
-                gameCallback.onError(error.getMessage());
-            }
-        });
-    }
-    */
-
-
-    public static void getCompanies(Context context, int[] ids) {
+    public static void getCompanies(int[] ids) {
         if (ids == null || ids.length <= 0) return;
-        APIWrapper wrapper = new APIWrapper(context, API_KEY);
+        APIWrapper wrapper = new APIWrapper(WePlayApplication.getContext(), API_KEY);
 
         Parameters params = new Parameters();
         String result = Arrays.toString(ids).replaceAll("\\[|\\]", "");
@@ -171,12 +141,13 @@ public class APIUtil {
             public void onSuccess(JSONArray jsonArray) {
                 Gson gson = new Gson();
                 Company[] companies = gson.fromJson(jsonArray.toString(), Company[].class);
-                //TODO: Do something with these
+                CompanyRepository companyRepository = RepositoryFactory.getCompanyRepository();
+                companyRepository.deleteAndInsertAll(companies);
             }
 
             @Override
-            public void onError(VolleyError error) {
-                // Do something on error
+            public void onError(VolleyError volleyError) {
+                Log.e(TAG, volleyError.getMessage());
             }
         });
     }

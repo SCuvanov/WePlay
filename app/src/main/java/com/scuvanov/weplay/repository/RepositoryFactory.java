@@ -1,9 +1,5 @@
 package com.scuvanov.weplay.repository;
 
-import android.content.Context;
-
-import com.scuvanov.weplay.database.AppDatabase;
-
 public class RepositoryFactory {
 
     //TODO: Make this a singleton, the repositories should be singletons?
@@ -14,21 +10,26 @@ public class RepositoryFactory {
         ESRB
     }
 
-    private RepositoryFactory() {}
+    private RepositoryFactory() {
+    }
 
     public static GenreRepository getGenreRepository() {
         return new GenreRepository();
     }
 
-    public static PlatformRepository getPlatformRepository(){
+    public static PlatformRepository getPlatformRepository() {
         return new PlatformRepository();
     }
 
-    public static EsrbRepository getEsrbRepository(){
+    public static EsrbRepository getEsrbRepository() {
         return new EsrbRepository();
     }
 
-    public static GameRepository getGameRepository(){
+    public static GameRepository getGameRepository() {
         return new GameRepository();
+    }
+
+    public static CompanyRepository getCompanyRepository() {
+        return new CompanyRepository();
     }
 }

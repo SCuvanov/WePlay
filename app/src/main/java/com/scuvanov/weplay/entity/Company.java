@@ -1,7 +1,15 @@
 package com.scuvanov.weplay.entity;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
+@Entity(indices = {@Index(value = {"id", "name"}, unique = true)})
 public class Company {
 
+    @PrimaryKey
+    @NonNull
     private int id;
     private String name, slug, url;
 

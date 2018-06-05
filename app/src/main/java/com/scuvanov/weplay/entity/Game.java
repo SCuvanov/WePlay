@@ -18,8 +18,8 @@ public class Game {
     @NonNull
     private int id;
     private int created_at, updated_at, rating_count;
-    private String name, url, genreNames, platformNames;
-    private int rating;
+    private String name, url, genreNames, platformNames, developerNames;
+    private double rating;
 
     @TypeConverters(IntArrayTypeConverter.class)
     private int[] platforms, genres, developers;
@@ -78,11 +78,11 @@ public class Game {
         this.rating_count = rating_count;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
@@ -148,5 +148,13 @@ public class Game {
 
     public void setPlatformNames(String platformNames) {
         this.platformNames = platformNames;
+    }
+
+    public String getDeveloperNames() {
+        return developerNames;
+    }
+
+    public void setDeveloperNames(String developerNames) {
+        this.developerNames = developerNames;
     }
 }
